@@ -31,6 +31,9 @@
         ><li class="work__bar--item">Thông báo</li></router-link
       >
       <hr />
+      <router-link to="yeu-cau" active-class="work__bar--active" class="link"
+        ><li class="work__bar--item">Yêu cầu</li></router-link
+      >
     </ul>
   </div>
 </template>
@@ -67,7 +70,6 @@ export default {};
 }
 
 .work__bar--active {
-  transform: translateX(20px) translateY(-10px);
   background-color: var(--primary-color);
   color: white !important;
 }

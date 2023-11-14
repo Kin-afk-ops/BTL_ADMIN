@@ -1,11 +1,13 @@
 <template>
   <div class="header">
     <div class="header__wrap">
-      <img
-        src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/fahasa-logo.png"
-        alt=""
-        class="header__logo"
-      />
+      <router-link to="/" class="link">
+        <img
+          src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/fahasa-logo.png"
+          alt=""
+          class="header__logo"
+        />
+      </router-link>
 
       <div class="header__admin">
         <div class="header__admin--avatar">
@@ -83,6 +85,7 @@ export default {};
   padding: 10px 0;
   font-size: 16px;
   cursor: pointer;
+  z-index: 999;
 }
 .header__admin--list:hover {
   color: var(--primary-color);

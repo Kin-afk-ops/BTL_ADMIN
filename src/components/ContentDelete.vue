@@ -4,9 +4,7 @@
     :class="{ hidden: !modal, display__flex: modal }"
     ref="modalHideBtn"
   >
-    <div class="customer__modal--title">
-      Bạn muốn xoá sản phẩm này trong giỏ hàng
-    </div>
+    <div class="customer__modal--title">Bạn muốn xoá?</div>
     <div class="customer__modal--content">
       <button class="customer__modal--hide" @click="handleHidden">Đóng</button>
       <button

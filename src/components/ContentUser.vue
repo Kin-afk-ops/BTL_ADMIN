@@ -10,8 +10,8 @@ export default {
     return {
       mode: {
         type: "user",
-        title: "Danh sach khach hang",
-        placeholder: "nhap email nguoi dung",
+        title: "Danh sách khách hàng",
+        placeholder: "Nhập email người dùng",
       },
     };
   },

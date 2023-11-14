@@ -10,8 +10,8 @@ export default {
     return {
       mode: {
         type: "book",
-        title: "Danh sach tat ca sach",
-        placeholder: "Nhap ten quuyen sacu",
+        title: "Tất cả quyển sách",
+        placeholder: "Nhập tên quyển sách",
       },
     };
   },

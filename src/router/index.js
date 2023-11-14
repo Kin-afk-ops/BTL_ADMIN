@@ -40,6 +40,11 @@ const routes = [
         path: "/thong-bao",
         component: () => import("../components/ContentNotification"),
       },
+
+      {
+        path: "/yeu-cau",
+        component: () => import("../components/ContentRequest"),
+      },
     ],
   },
 ];
