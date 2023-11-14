@@ -1,5 +1,5 @@
 .content__form {
-  position: fixed;
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,4 +78,18 @@
   padding: 10px;
   font-size: 16px;
   font-family: "Roboto", sans-serif;
+}
+
+.x-cancel {
+  padding: 10px;
+  font-size: 25px;
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  transition: 0.3s linear;
+}
+
+.x-cancel:hover {
+  color: var(--primary-color);
 }

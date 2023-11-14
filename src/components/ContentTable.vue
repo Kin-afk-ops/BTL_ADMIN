@@ -151,7 +151,7 @@
       :modal="modal"
       @hidden="modal = false"
     />
-    <content-form :formMode="formMode" @hidden="formMode = false" />
+    <book-form :formMode="formMode" @hidden="formMode = false" />
     <notification-form
       :formNotificationMode="formNotificationMode"
       @hidden="formNotificationMode = false"
@@ -168,7 +168,7 @@
 </template>
 <script>
 import ContentDelete from "./ContentDelete";
-import ContentForm from "./form/ContentForm";
+import BookForm from "./form/BookForm";
 import NotificationForm from "./form/NotificationForm";
 import CateForm from "./form/CateForm";
 import OrderView from "./contentView/OrderView";
@@ -198,7 +198,7 @@ export default {
 
   components: {
     ContentDelete,
-    ContentForm,
+    BookForm,
     NotificationForm,
     CateForm,
     OrderView,

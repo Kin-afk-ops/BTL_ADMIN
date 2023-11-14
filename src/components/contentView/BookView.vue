@@ -124,7 +124,7 @@ export default {
 <style>
 .book__view {
   padding: 20px;
-  position: fixed;
+  position: absolute;
   z-index: 999;
   top: 20px;
   left: 50%;
@@ -207,6 +207,7 @@ export default {
   display: flex;
   flex-direction: column;
   font-size: 14px;
+  padding: 20px;
 }
 
 .book__view--top p {
