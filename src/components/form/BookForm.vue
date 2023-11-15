@@ -1,7 +1,7 @@
 <template>
-  <div class="content__form" :class="{ hidden: formMode === false }">
+  <div class="content__form" :class="{ hidden: !formBookMode }">
     <div class="main__container form__container">
-      <h1 class="form__title main__title">Thêm sản phẩm</h1>
+      <h1 class="form__title main__title">{{ formValue.title }}</h1>
       <hr />
 
       <div class="form__content">
@@ -54,7 +54,7 @@
           />
 
           <button class="form__btn--main main__btn" @click="handleAdd">
-            Thêm
+            {{ formValue.btn }}
           </button>
           <button @click="handleHidden" class="form__btn--extra main__btn">
             Huỷ
@@ -69,12 +69,11 @@
 </template>
 <script>
 export default {
-  props: ["formMode"],
-  data() {
-    return {
-      value: "",
-    };
+  props: ["formBookMode", "formValue"],
+  setup(props) {
+    console.log(props.formBookMode);
   },
+
   methods: {
     handleHidden(e) {
       e.preventDefault();

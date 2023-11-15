@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MainView from "../view/MainView";
+import Login from "../view/LoginView";
 
 const routes = [
   {
@@ -45,7 +46,17 @@ const routes = [
         path: "/yeu-cau",
         component: () => import("../components/ContentRequest"),
       },
+
+      {
+        path: "/nhan-vien",
+        component: () => import("../components/ContentStaff"),
+      },
     ],
+  },
+
+  {
+    path: "/login",
+    component: Login,
   },
 ];
 

@@ -59,10 +59,12 @@
             <div class="info__bottom" v-if="mode.type === 'notification'">
               <p class="info__bottom--title">Tiêu đề thông báo</p>
               <p class="info__bottom--content">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero
-                atque totam iste, expedita corrupti hic amet soluta earum magnam
-                corporis sed tempore assumenda placeat modi doloribus nostrum
-                aliquid, facere culpa!
+                linh@gmail.com
+                <br />
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                Repellendus eligendi magni, ea, est quod expedita soluta facere
+                placeat fuga vel consectetur? Dolor, cumque! Molestias aliquam
+                quis pariatur hic ea obcaecati!
               </p>
             </div>
           </div>
@@ -151,12 +153,27 @@
       :modal="modal"
       @hidden="modal = false"
     />
-    <book-form :formMode="formMode" @hidden="formMode = false" />
+    <book-form
+      :formValue="formValue"
+      :formBookMode="formBookMode"
+      @hidden="formBookMode = false"
+    />
+    <user-form :formUserMode="formUserMode" @hidden="formUserMode = false" />
     <notification-form
       :formNotificationMode="formNotificationMode"
       @hidden="formNotificationMode = false"
     />
-    <cate-form :formCateMode="formCateMode" @hidden="formCateMode = false" />
+    <cate-form
+      :formValue="formValue"
+      :formCateMode="formCateMode"
+      @hidden="formCateMode = false"
+    />
+
+    <staff-form
+      :formStaffMode="formStaffMode"
+      @hidden="formStaffMode = false"
+    />
+
     <order-view
       :viewOrderMode="viewOrderMode"
       @hidden="viewOrderMode = false"
@@ -164,16 +181,23 @@
 
     <user-view :viewUserMode="viewUserMode" @hidden="viewUserMode = false" />
     <book-view :viewBookMode="viewBookMode" @hidden="viewBookMode = false" />
+    <notification-view
+      :viewNotificationMode="viewNotificationMode"
+      @hidden="viewNotificationMode = false"
+    />
   </div>
 </template>
 <script>
 import ContentDelete from "./ContentDelete";
 import BookForm from "./form/BookForm";
+import UserForm from "./form/UserForm";
 import NotificationForm from "./form/NotificationForm";
+import StaffForm from "./form/StaffForm";
 import CateForm from "./form/CateForm";
 import OrderView from "./contentView/OrderView";
 import UserView from "./contentView/UserView";
 import BookView from "./contentView/BookView";
+import NotificationView from "./contentView/NotificationView";
 
 export default {
   props: ["mode"],
@@ -188,11 +212,19 @@ export default {
       selected: [],
       data: [1, 2, 3, 4, 5, 6],
       modal: false,
-      formMode: false,
+      formUserMode: false,
+      formBookMode: false,
       formNotificationMode: false,
       formCateMode: false,
+      formStaffMode: false,
       viewUserMode: false,
       viewBookMode: false,
+      viewOrderMode: false,
+      viewNotificationMode: false,
+      formValue: {
+        title: "",
+        btn: "Thêm",
+      },
     };
   },
 
@@ -204,6 +236,9 @@ export default {
     OrderView,
     UserView,
     BookView,
+    NotificationView,
+    UserForm,
+    StaffForm,
   },
 
   methods: {
@@ -224,17 +259,25 @@ export default {
 
     handleAdd() {
       if (this.mode.type === "book") {
-        this.formMode = true;
+        this.formBookMode = true;
+        this.formValue.title = "Thêm sách";
       } else if (this.mode.type === "categories") {
         this.formCateMode = true;
+        this.formValue.title = "Thêm danh mục";
+      } else if (this.mode.type === "staff") {
+        this.formStaffMode = true;
       }
     },
 
     handleEdit() {
-      if (this.mode.type === "book") {
-        this.formMode = true;
+      if (this.mode.type === "user") {
+        this.formUserMode = true;
+      } else if (this.mode.type === "book") {
+        this.formBookMode = true;
       } else if (this.mode.type === "categories") {
         this.formCateMode = true;
+        this.formValue.title = "Sửa danh mục";
+        this.formValue.btn = "Sửa";
       }
     },
 
@@ -249,6 +292,8 @@ export default {
         this.viewUserMode = true;
       } else if (this.mode.type === "book") {
         this.viewBookMode = true;
+      } else if (this.mode.type === "notification") {
+        this.viewNotificationMode = true;
       }
     },
   },
@@ -257,7 +302,9 @@ export default {
       if (
         this.mode.type === "user" ||
         this.mode.type === "cart" ||
-        this.mode.type === "order"
+        this.mode.type === "order" ||
+        this.mode.type === "notification" ||
+        this.mode.type === "request"
       ) {
         return false;
       } else {
@@ -275,7 +322,9 @@ export default {
       if (
         this.mode.type === "cart" ||
         this.mode.type === "order" ||
-        this.mode.type === "notification"
+        this.mode.type === "notification" ||
+        this.mode.type === "request" ||
+        this.mode.type === "staff"
       ) {
         return false;
       } else {
@@ -284,7 +333,12 @@ export default {
     },
 
     viewMode() {
-      if (this.mode.type === "user" || this.mode.type === "book") {
+      if (
+        this.mode.type === "user" ||
+        this.mode.type === "book" ||
+        this.mode.type === "notification" ||
+        this.mode.type === "staff"
+      ) {
         return true;
       } else {
         return false;

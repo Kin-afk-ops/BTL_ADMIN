@@ -4,17 +4,18 @@
   </div>
 </template>
 <script>
-import ContentTable from "./ContentTable";
+import ContentTable from "./ContentTable.vue";
 export default {
   data() {
     return {
       mode: {
-        type: "request",
-        title: "Tất cả yêu cầu huỷ đơn",
-        placeholder: "Nhập Email của khách hàng",
+        type: "staff",
+        title: "Danh sách tài khoản nhân viên",
+        placeholder: "Nhập tên tài khoản của nhân viên",
       },
     };
   },
+
   components: {
     ContentTable,
   },

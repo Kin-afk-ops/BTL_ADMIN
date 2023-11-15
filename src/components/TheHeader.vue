@@ -15,9 +15,9 @@
         </div>
         <ul class="header__admin--list">
           <li class="header__admin--item">Thông tin</li>
-
+          <hr />
           <li class="header__admin--item">Đăng nhập</li>
-
+          <hr />
           <li class="header__admin--item">Đăng xuất</li>
         </ul>
       </div>
@@ -48,9 +48,14 @@ export default {};
   height: 39px;
 }
 
+.header__admin {
+  position: relative;
+  height: 100%;
+}
+
 .header__admin--avatar {
   border-radius: 50%;
-  position: relative;
+
   height: 100%;
   display: flex;
   align-items: center;
@@ -72,22 +77,29 @@ export default {};
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  top: 62px;
-  right: 10px;
+  top: 100%;
+  right: -10px;
   border: 1px solid #ccc;
   border-radius: 10px;
-}
-
-.header__admin:hover .header__admin--list {
-  display: flex;
-}
-.header__admin--list {
   padding: 10px 0;
   font-size: 16px;
   cursor: pointer;
   z-index: 999;
 }
-.header__admin--list:hover {
+
+.header__admin--list li {
+  padding: 10px;
+  font-size: 18px;
+  width: 100%;
+  border: 1px solid transparent;
+}
+
+.header__admin:hover .header__admin--list {
+  display: flex;
+}
+
+.header__admin--list li:hover {
   color: var(--primary-color);
+  border: 1px solid var(--primary-color);
 }
 </style>

@@ -12,6 +12,9 @@
           <label for="">Tiêu đề</label>
           <input placeholder="Nhập tiêu đề" type="text" />
 
+          <label for="">Đường dẫn</label>
+          <input placeholder="Nhập đường dẫn" type="text" />
+
           <label for="">Nội dung </label>
           <textarea
             name=""

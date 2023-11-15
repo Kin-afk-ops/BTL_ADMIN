@@ -1,7 +1,9 @@
 <template>
   <div class="content__form" :class="{ hidden: formCateMode === false }">
     <div class="main__container form__container">
-      <h1 class="form__title main__title">Thêm sản phẩm</h1>
+      <h1 class="form__title main__title">
+        {{ formValue.title }}
+      </h1>
       <hr />
 
       <div class="form__content">
@@ -12,7 +14,7 @@
           <label for="">Link ảnh danh mục </label>
           <input placeholder="Tìm ảnh sách và thêm link" type="text" />
 
-          <button class="form__btn--main main__btn">Thêm</button>
+          <button class="form__btn--main main__btn">{{ formValue.btn }}</button>
           <button @click="handleHidden" class="form__btn--extra main__btn">
             Huỷ
           </button>
@@ -23,7 +25,7 @@
 </template>
 <script>
 export default {
-  props: ["formCateMode"],
+  props: ["formCateMode", "formValue"],
   methods: {
     handleHidden(e) {
       e.preventDefault();
