@@ -11,11 +11,20 @@
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import WorkBar from "../components/WorkBar";
 
 export default {
   components: {
     WorkBar,
+  },
+
+  computed: {
+    ...mapGetters(["staff"]),
+  },
+
+  beforeCreate() {
+    console.log(this.$store);
   },
 };
 </script>

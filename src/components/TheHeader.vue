@@ -9,23 +9,34 @@
         />
       </router-link>
 
-      <div class="header__admin">
+      <div class="header__admin" v-if="staff">
         <div class="header__admin--avatar">
           <img src="../assets/default/default_avatar.png" alt="" />
         </div>
         <ul class="header__admin--list">
           <li class="header__admin--item">Thông tin</li>
           <hr />
-          <li class="header__admin--item">Đăng nhập</li>
-          <hr />
-          <li class="header__admin--item">Đăng xuất</li>
+          <li @click="handleLogOut" class="header__admin--item">Đăng xuất</li>
         </ul>
       </div>
     </div>
   </div>
 </template>
 <script>
-export default {};
+import { mapGetters } from "vuex";
+
+export default {
+  methods: {
+    handleLogOut() {
+      localStorage.removeItem("token");
+      this.$store.dispatch("staff", null);
+      this.$router.push("/login");
+    },
+  },
+  computed: {
+    ...mapGetters(["staff"]),
+  },
+};
 </script>
 <style>
 .header {

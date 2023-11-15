@@ -8,15 +8,16 @@
       <hr />
 
       <div class="form__content">
-        <form class="form__group">
+        <form class="form__group" @submit.prevent="handleSubmit">
           <label for="">Tiêu đề</label>
-          <input placeholder="Nhập tiêu đề" type="text" />
+          <input placeholder="Nhập tiêu đề" type="text" v-model="form.title" />
 
           <label for="">Đường dẫn</label>
-          <input placeholder="Nhập đường dẫn" type="text" />
+          <input placeholder="Nhập đường dẫn" type="text" v-model="form.path" />
 
           <label for="">Nội dung </label>
           <textarea
+            v-model="form.content"
             name=""
             id=""
             cols="30"
@@ -36,10 +37,24 @@
 <script>
 export default {
   props: ["formNotificationMode"],
+  data() {
+    return {
+      form: {
+        title: "",
+        path: "",
+        content: "",
+      },
+    };
+  },
+
   methods: {
     handleHidden(e) {
       e.preventDefault();
       this.$emit("hidden");
+    },
+
+    handleSubmit() {
+      console.log(this.form);
     },
   },
 };

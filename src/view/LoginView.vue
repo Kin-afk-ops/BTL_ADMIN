@@ -6,11 +6,21 @@
 
       <div class="login__content">
         <form class="login__form" @submit.prevent="handleSubmit">
-          <label for="">Tên tài khoản</label>
-          <input placeholder="Nhập tên tài khoản" type="text" />
+          <label for="name">Tên tài khoản</label>
+          <input
+            v-model="form.username"
+            id="name"
+            placeholder="Nhập tên tài khoản"
+            type="text"
+          />
 
-          <label for="">Mật khẩu</label>
-          <input placeholder="Nhập mật khẩu" type="password" />
+          <label for="password">Mật khẩu</label>
+          <input
+            v-model="form.password"
+            id="password"
+            placeholder="Nhập mật khẩu"
+            type="password"
+          />
 
           <button class="main__btn login__btn--main">Đăng nhập</button>
         </form>
@@ -19,10 +29,29 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   name: "login",
+  data() {
+    return {
+      form: {
+        username: "",
+        password: "",
+      },
+    };
+  },
+
   methods: {
-    handleSubmit() {},
+    async handleSubmit() {
+      try {
+        let res = await axios.post("/auth/staff/login", this.form);
+        localStorage.setItem("token", res.data.accessToken);
+        this.$store.dispatch("staff", this.form);
+        this.$router.push("/");
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>

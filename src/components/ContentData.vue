@@ -5,18 +5,39 @@
         <p>
           Số người dùng mới
           <br />
-          trong tháng: 20
+          trong tháng {{ month }}: {{ userTotal }}
         </p>
       </div>
       <div class="data__income data__block">
-        <p>Doanh thu:</p>
-        <p>300000 đ</p>
+        <p>Doanh thu tháng {{ mouthIncome }}:</p>
+        <p>{{ income }} đ</p>
       </div>
     </div>
   </div>
 </template>
 <script>
-export default {};
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      month: 0,
+      userTotal: 0,
+      mouthIncome: 0,
+      income: 0,
+    };
+  },
+
+  async beforeCreate() {
+    const res1 = await axios.get("/user/stats");
+    this.month = res1.data[0]._id;
+    this.userTotal = res1.data[0].total;
+
+    const res2 = await axios.get("/order/income");
+    this.mouthIncome = res2.data[0]._id;
+    this.income = res2.data[0].total;
+  },
+};
 </script>
 <style>
 .data {

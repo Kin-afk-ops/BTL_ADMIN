@@ -28,15 +28,19 @@
 
     <div class="content__table--container">
       <ul class="content__table--container-list">
-        <li class="content__table--container-item row no-gutters">
+        <li
+          class="content__table--container-item row no-gutters"
+          v-for="user in userData"
+          :key="user._id"
+        >
           <div
             class="content__table--container-item-input display__flex--center c-1"
           >
             <input
               v-if="mode.type !== 'cart'"
               type="checkbox"
-              value="1"
               v-model="selected"
+              :value="user._id"
             />
           </div>
           <img
@@ -47,13 +51,16 @@
           />
           <div class="content__table--container-item-info c-4">
             <p class="info__top" v-if="mode.type !== 'notification'">
-              <i v-if="mode.type === 'user'" class="fa-solid fa-envelope"></i
-              >Linh@gmail.com
+              <i v-if="mode.type === 'user'" class="fa-solid fa-envelope"></i>
+              {{ user.email }}
             </p>
 
             <p class="info__bottom" v-if="mode.type !== 'notification'">
-              <i v-if="mode.type === 'user'" class="fa-solid fa-phone"></i
-              >0589443320
+              <i
+                v-if="mode.type === 'user'"
+                class="fa-solid fa-calendar-days"
+              ></i>
+              {{ user.createdAt }}
             </p>
 
             <div class="info__bottom" v-if="mode.type === 'notification'">
@@ -79,7 +86,7 @@
             v-if="viewMode"
             class="content__table--container-item-edit display__flex--center c-2"
           >
-            <i @click="handleViewDisplay" class="fa-solid fa-eye"></i>
+            <i @click="handleViewDisplay(user._id)" class="fa-solid fa-eye"></i>
           </div>
 
           <div
@@ -92,7 +99,7 @@
 
           <div
             v-if="mode.type === 'order'"
-            @click="handleViewDisplay"
+            @click="handleViewDisplay()"
             class="content__table--container-item-notification display__flex--center c-2"
           >
             Xem đơn hàng
@@ -111,80 +118,58 @@
               <button class="content__table--btn main__btn">Chuyển</button>
             </form>
           </div>
+          <content-delete
+            :selected="selected"
+            :modal="modal"
+            @hidden="modal = false"
+          />
+          <book-form
+            :formValue="formValue"
+            :formBookMode="formBookMode"
+            @hidden="formBookMode = false"
+          />
+          <user-form
+            :userData="user"
+            :formUserMode="formUserMode"
+            @hidden="formUserMode = false"
+          />
+          <notification-form
+            :formNotificationMode="formNotificationMode"
+            @hidden="formNotificationMode = false"
+          />
+          <cate-form
+            :formValue="formValue"
+            :formCateMode="formCateMode"
+            @hidden="formCateMode = false"
+          />
+
+          <staff-form
+            :formStaffMode="formStaffMode"
+            @hidden="formStaffMode = false"
+          />
+
+          <order-view
+            :viewOrderMode="viewOrderMode"
+            @hidden="viewOrderMode = false"
+          />
+
+          <user-view
+            :viewUserMode="viewUserMode"
+            @hidden="viewUserMode = false"
+            :userInfo="userInfo"
+          />
+          <book-view
+            :viewBookMode="viewBookMode"
+            @hidden="viewBookMode = false"
+          />
+          <notification-view
+            :viewNotificationMode="viewNotificationMode"
+            @hidden="viewNotificationMode = false"
+          />
         </li>
         <hr />
-
-        <li class="content__table--container-item row no-gutters">
-          <div
-            class="content__table--container-item-input display__flex--center c-1"
-          >
-            <input type="checkbox" value="2" v-model="selected" />
-          </div>
-          <img
-            class="img__main c-1"
-            src="https://cdn0.fahasa.com/media/catalog/product//8/9/8935278607311.jpg"
-            alt=""
-          />
-          <div class="content__table--container-item-info c-4">
-            <p class="info__title">
-              Không Diệt Không Sinh Đừng Sợ Hãi (Tái Bản 2022)
-            </p>
-            <div class="info__money">
-              <p class="info__money--all">60.000đ</p>
-              <p class="info__money--discount">110.000đ</p>
-            </div>
-          </div>
-          <div
-            class="content__table--container-item-quality display__flex--center c-2"
-          >
-            <div>1</div>
-          </div>
-
-          <div
-            class="content__table--container-item-money display__flex--center c-2"
-          >
-            60.000đ
-          </div>
-        </li>
       </ul>
     </div>
-    <content-delete
-      :selected="selected"
-      :modal="modal"
-      @hidden="modal = false"
-    />
-    <book-form
-      :formValue="formValue"
-      :formBookMode="formBookMode"
-      @hidden="formBookMode = false"
-    />
-    <user-form :formUserMode="formUserMode" @hidden="formUserMode = false" />
-    <notification-form
-      :formNotificationMode="formNotificationMode"
-      @hidden="formNotificationMode = false"
-    />
-    <cate-form
-      :formValue="formValue"
-      :formCateMode="formCateMode"
-      @hidden="formCateMode = false"
-    />
-
-    <staff-form
-      :formStaffMode="formStaffMode"
-      @hidden="formStaffMode = false"
-    />
-
-    <order-view
-      :viewOrderMode="viewOrderMode"
-      @hidden="viewOrderMode = false"
-    />
-
-    <user-view :viewUserMode="viewUserMode" @hidden="viewUserMode = false" />
-    <book-view :viewBookMode="viewBookMode" @hidden="viewBookMode = false" />
-    <notification-view
-      :viewNotificationMode="viewNotificationMode"
-      @hidden="viewNotificationMode = false"
-    />
   </div>
 </template>
 <script>
@@ -199,18 +184,19 @@ import UserView from "./contentView/UserView";
 import BookView from "./contentView/BookView";
 import NotificationView from "./contentView/NotificationView";
 
+import axios from "axios";
+
 export default {
-  props: ["mode"],
+  props: ["mode", "userData"],
 
   setup(props) {
-    console.log(props.mode);
+    console.log(props.mode.type);
   },
 
   data() {
     return {
       selectAll: false,
       selected: [],
-      data: [1, 2, 3, 4, 5, 6],
       modal: false,
       formUserMode: false,
       formBookMode: false,
@@ -225,6 +211,8 @@ export default {
         title: "",
         btn: "Thêm",
       },
+
+      userInfo: "",
     };
   },
 
@@ -243,12 +231,12 @@ export default {
 
   methods: {
     select() {
-      this.selected = [];
-      if (!this.selectAll) {
-        this.data.forEach((d) => {
-          this.selected.push(d);
-        });
-      }
+      // this.selected = [];
+      // if (!this.selectAll) {
+      //   this.data.forEach((d) => {
+      //     this.selected.push(d);
+      //   });
+      // }
     },
 
     handleDelete() {
@@ -285,11 +273,14 @@ export default {
       this.formNotificationMode = true;
     },
 
-    handleViewDisplay() {
+    async handleViewDisplay(id) {
       if (this.mode.type === "order") {
         this.viewOrderMode = true;
       } else if (this.mode.type === "user") {
+        const resUserInfo = await axios.get(`info/${id}`);
         this.viewUserMode = true;
+        this.userInfo = resUserInfo.data;
+        console.log(resUserInfo);
       } else if (this.mode.type === "book") {
         this.viewBookMode = true;
       } else if (this.mode.type === "notification") {
@@ -399,7 +390,7 @@ export default {
   padding: 20px 0;
 }
 
-.content__table--container-item input {
+.content__table--container-item-input input {
   width: 20px;
   height: 20px;
   cursor: pointer;

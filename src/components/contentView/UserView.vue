@@ -12,27 +12,24 @@
     <div class="customer__info--info">
       <p>
         <i class="fa-solid fa-circle-info"></i>
-        ...
+        {{ userInfo.lastName + " " + userInfo.firstName }}
       </p>
-      <p>
-        <i class="fa-solid fa-envelope"></i>
-        linh@gmail.com
-      </p>
+
       <p>
         <i class="fa-solid fa-phone"></i>
-        0589443320
+        {{ userInfo.phone }}
       </p>
       <p>
         <i class="fa-solid fa-person"></i>
-        Nam
+        {{ userInfo.sex }}
       </p>
       <p>
         <i class="fa-solid fa-cake-candles"></i>
-        22-08-2003
+        {{ userInfo.birthday }}
       </p>
       <p>
         <i class="fa-solid fa-location-dot"></i>
-        Can Tho
+        {{ userInfo.address }}
       </p>
     </div>
     <div class="user__view--cancel">
@@ -43,7 +40,8 @@
 
 <script>
 export default {
-  props: ["viewUserMode"],
+  props: ["viewUserMode", "userInfo"],
+
   methods: {
     viewHidden() {
       this.$emit("hidden");
