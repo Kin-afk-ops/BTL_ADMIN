@@ -26,10 +26,7 @@
       <router-link to="don-hang" active-class="work__bar--active" class="link"
         ><li class="work__bar--item">Đơn hàng</li></router-link
       >
-      <hr />
-      <router-link to="thong-bao" active-class="work__bar--active" class="link"
-        ><li class="work__bar--item">Thông báo</li></router-link
-      >
+
       <hr />
       <router-link to="yeu-cau" active-class="work__bar--active" class="link"
         ><li class="work__bar--item">Yêu cầu</li></router-link

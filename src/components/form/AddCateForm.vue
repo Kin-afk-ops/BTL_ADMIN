@@ -1,7 +1,9 @@
 <template>
-  <div class="content__form">
+  <div class="content__form" :class="{ hidden: formCateMode === false }">
     <div class="main__container form__container">
-      <h1 class="form__title main__title">Chỉnh sửa danh mục</h1>
+      <h1 class="form__title main__title">
+        {{ formValue.title }}
+      </h1>
       <hr />
 
       <div class="form__content">
@@ -27,8 +29,10 @@
             type="text"
           />
 
-          <button class="form__btn--main main__btn">Sửa</button>
-          <button class="form__btn--extra main__btn">Huỷ</button>
+          <button class="form__btn--main main__btn">{{ formValue.btn }}</button>
+          <button @click="handleHidden" class="form__btn--extra main__btn">
+            Huỷ
+          </button>
         </form>
       </div>
     </div>
@@ -38,6 +42,7 @@
 import axios from "axios";
 
 export default {
+  props: ["formCateMode", "formValue"],
   data() {
     return {
       cateForm: {
@@ -48,20 +53,16 @@ export default {
     };
   },
 
-  async created() {
-    const res = await axios.get(`/category/find/${this.$route.params.cateId}`);
-    this.cateForm = res.data;
-  },
-
   methods: {
     handleHidden(e) {
       e.preventDefault();
       this.$emit("hidden");
     },
     async handleSubmit() {
-      await axios.put(`/category/${this.$route.params.cateId}`, this.cateForm);
-      alert("Sửa thành công");
-      this.$router.back();
+      await axios.post("/category/", this.cateForm);
+      alert("Thêm thành công");
+      this.$emit("hidden");
+      window.location.reload();
     },
   },
 };

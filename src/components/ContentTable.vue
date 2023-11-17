@@ -28,11 +28,7 @@
 
     <div class="content__table--container">
       <ul class="content__table--container-list">
-        <li
-          class="content__table--container-item row no-gutters"
-          v-for="user in userData"
-          :key="user._id"
-        >
+        <li class="content__table--container-item row no-gutters">
           <div
             class="content__table--container-item-input display__flex--center c-1"
           >
@@ -40,7 +36,6 @@
               v-if="mode.type !== 'cart'"
               type="checkbox"
               v-model="selected"
-              :value="user._id"
             />
           </div>
           <img
@@ -52,7 +47,7 @@
           <div class="content__table--container-item-info c-4">
             <p class="info__top" v-if="mode.type !== 'notification'">
               <i v-if="mode.type === 'user'" class="fa-solid fa-envelope"></i>
-              {{ user.email }}
+              <!-- {{ data.email }} -->
             </p>
 
             <p class="info__bottom" v-if="mode.type !== 'notification'">
@@ -60,7 +55,7 @@
                 v-if="mode.type === 'user'"
                 class="fa-solid fa-calendar-days"
               ></i>
-              {{ user.createdAt }}
+              <!-- {{ data.createdAt }} -->
             </p>
 
             <div class="info__bottom" v-if="mode.type === 'notification'">
@@ -134,6 +129,7 @@
             @hidden="formUserMode = false"
           />
           <notification-form
+            :userId="user._id"
             :formNotificationMode="formNotificationMode"
             @hidden="formNotificationMode = false"
           />
@@ -178,7 +174,6 @@ import BookForm from "./form/BookForm";
 import UserForm from "./form/UserForm";
 import NotificationForm from "./form/NotificationForm";
 import StaffForm from "./form/StaffForm";
-import CateForm from "./form/CateForm";
 import OrderView from "./contentView/OrderView";
 import UserView from "./contentView/UserView";
 import BookView from "./contentView/BookView";
@@ -187,10 +182,11 @@ import NotificationView from "./contentView/NotificationView";
 import axios from "axios";
 
 export default {
-  props: ["mode", "userData"],
+  props: ["mode", "datas"],
 
   setup(props) {
     console.log(props.mode.type);
+    console.log(props.datas);
   },
 
   data() {
@@ -220,7 +216,6 @@ export default {
     ContentDelete,
     BookForm,
     NotificationForm,
-    CateForm,
     OrderView,
     UserView,
     BookView,

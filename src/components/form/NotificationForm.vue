@@ -35,8 +35,9 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
-  props: ["formNotificationMode"],
+  props: ["formNotificationMode", "userId"],
   data() {
     return {
       form: {
@@ -44,6 +45,7 @@ export default {
         path: "",
         content: "",
       },
+      notificationId: "",
     };
   },
 
@@ -53,8 +55,16 @@ export default {
       this.$emit("hidden");
     },
 
-    handleSubmit() {
-      console.log(this.form);
+    async handleSubmit() {
+      const res1 = await axios.get(`staff/notification/${this.userId}`);
+
+      this.notificationId = res1.data._id;
+      const res = await axios.put(
+        `notification/${this.notificationId}`,
+        this.form
+      );
+      console.log(res);
+      this.$emit("hidden");
     },
   },
 };

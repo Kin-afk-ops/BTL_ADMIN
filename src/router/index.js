@@ -18,13 +18,29 @@ const routes = [
       },
 
       {
-        path: "/sach",
+        path: "sach",
         component: () => import("../components/ContentBook"),
+      },
+      {
+        name: "bookView",
+        path: "sach/view/:bookId",
+        component: () => import("../components/contentView/BookView"),
+      },
+
+      {
+        name: "edit",
+        path: "sach/edit/:bookId",
+        component: () => import("../components/form/BookForm"),
       },
 
       {
         path: "/danh-muc",
         component: () => import("../components/ContentCate"),
+      },
+
+      {
+        path: "/danh-muc/edit/:cateId",
+        component: () => import("../components/form/CateForm"),
       },
 
       {
@@ -38,13 +54,13 @@ const routes = [
       },
 
       {
-        path: "/thong-bao",
-        component: () => import("../components/ContentNotification"),
+        path: "/yeu-cau",
+        component: () => import("../components/ContentRequest"),
       },
 
       {
-        path: "/yeu-cau",
-        component: () => import("../components/ContentRequest"),
+        path: "/thong-bao/:userId",
+        component: () => import("../components/contentView/NotificationView"),
       },
 
       {

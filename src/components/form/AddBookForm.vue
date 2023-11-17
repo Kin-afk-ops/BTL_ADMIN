@@ -1,11 +1,15 @@
 <template>
-  <div class="content__form">
+  <div class="content__form" :class="{ hidden: !addFormBookMode }">
     <div class="main__container form__container">
-      <h1 class="form__title main__title">Chỉnh sửa thông tin sách</h1>
+      <h1 class="form__title main__title">{{ formValue.title }}</h1>
       <hr />
 
       <div class="form__content">
-        <form class="form__group" @submit.prevent="handleSubmit">
+        <form
+          class="form__group"
+          :class="{ hidden: isSuccess }"
+          @submit.prevent="handleSubmitBook"
+        >
           <label for="">Tên sách</label>
           <input
             v-model="bookForm.name"
@@ -34,6 +38,7 @@
             type="text"
           />
 
+          <label for="">Danh mục</label>
           <select
             class="form__categories"
             name=""
@@ -49,13 +54,22 @@
             </option>
           </select>
 
+          <button class="form__btn--main main__btn">
+            {{ formValue.btn }}
+          </button>
+        </form>
+
+        <form
+          class="form__group"
+          :class="{ hidden: !isSuccess }"
+          @submit.prevent="handleSubmitInfoBook"
+        >
           <label for="">Tác giả</label>
           <input
             v-model="infoBookForm.infoBook.auth"
             placeholder="Nhập tác giả"
             type="text"
           />
-
           <label for="">Nhà xuất bản</label>
           <input
             v-model="infoBookForm.infoBook.publisher"
@@ -74,6 +88,20 @@
           <input
             v-model="infoBookForm.infoBook.nameSeries"
             placeholder="Nhập tên đầu sách"
+            type="text"
+          />
+
+          <label for="">Năm phát hành</label>
+          <input
+            v-model="infoBookForm.infoBook.publishingYear"
+            placeholder="Nhập tên đầu sách"
+            type="text"
+          />
+
+          <label for="">Số lượng</label>
+          <input
+            v-model="infoBookForm.infoBook.quantity"
+            placeholder="Nhập số lượng"
             type="text"
           />
 
@@ -101,12 +129,6 @@
             <option value="Bìa mềm">Bìa mềm</option>
             <option value="Bìa cứng">Bìa cứng</option>
           </select>
-          <label for="">Số lượng</label>
-          <input
-            v-model="infoBookForm.infoBook.quantity"
-            placeholder="Nhập số lượng"
-            type="text"
-          />
 
           <label for="">Số trang</label>
           <input
@@ -124,8 +146,8 @@
             @change="handleChange($event)"
           />
 
-          <button class="form__btn--main main__btn" @click="handleAdd">
-            Sửa
+          <button class="form__btn--main main__btn">
+            {{ formValue.btn }}
           </button>
           <button @click="handleHidden" class="form__btn--extra main__btn">
             Huỷ
@@ -140,19 +162,24 @@
 </template>
 <script>
 import axios from "axios";
+
 export default {
+  props: ["addFormBookMode", "formValue"],
+
   data() {
     return {
+      isSuccess: false,
+      id: "",
       bookForm: {
         name: "",
         image: "",
         price: 0,
         discount: 0,
-
         categories: "",
       },
       infoBookForm: {
         infoBook: {
+          auth: "",
           publisher: "",
           supplier: "",
           nameSeries: "",
@@ -170,42 +197,37 @@ export default {
   },
 
   async created() {
-    const res1 = await axios.get(`/book/find/${this.$route.params.bookId}`);
-    this.bookForm = res1.data;
-    console.log(this.bookForm);
-
-    const res2 = await axios.get(`/infoBook/${this.$route.params.bookId}`);
-    this.infoBookForm.infoBook = res2.data.infoBook;
-
-    const res5 = await axios.get("/category");
-    this.categories = res5.data;
+    const res = await axios.get("/category");
+    this.categories = res.data;
   },
 
   methods: {
     handleHidden(e) {
       e.preventDefault();
-      this.$router.back();
+      this.$emit("hidden");
+    },
+    // handleAdd(e) {
+    //   e.preventDefault();
+    //   console.log(this.$refs.commonRef.getHTML());
+    // },
+
+    async handleSubmitBook() {
+      const res1 = await axios.post(`/book`, this.bookForm);
+      this.id = res1.data._id;
+      console.log(res1);
+      this.isSuccess = true;
     },
 
-    async handleSubmit() {
-      const res3 = await axios.put(
-        `/book/${this.$route.params.bookId}`,
-        this.bookForm
-      );
-      console.log(res3);
-
+    async handleSubmitInfoBook() {
       this.infoBookForm.infoBook.desc = this.$refs.commonRef.getHTML();
       if (this.infoBookForm.infoBook.desc !== "") {
         console.log(this.infoBookForm);
       }
-      const res4 = await axios.put(
-        `/infoBook/${this.$route.params.bookId}`,
-        this.infoBookForm
-      );
-      console.log(res4);
-
+      console.log(this.infoBookForm);
+      const res2 = await axios.post(`/infoBook/${this.id}`, this.infoBookForm);
+      console.log(res2);
+      window.location.reload();
       alert("Thêm sách thành công");
-      this.$router.back();
     },
   },
 };

@@ -1,42 +1,87 @@
 <template>
-  <div
-    class="notification__view main__container"
-    :class="{ hidden: !viewNotificationMode }"
-  >
-    <h2 class="notification__view--title main__title">Tiêu đề thông báo</h2>
-
+  <div class="notification__view--wrap">
     <div class="notification__view--cancel">
       <i class="fa-regular fa-rectangle-xmark" @click="viewHidden"></i>
     </div>
 
-    <div class="main__title">Đường dẫn</div>
-    <p class="notification__view--content">https://github.com/</p>
+    <div
+      class="notification__view main__container"
+      v-for="(noti, index) in notificationInfo"
+      :key="noti._id"
+    >
+      <h2 class="notification__view--title main__title">
+        {{ noti.title }}
+      </h2>
 
-    <div class="main__title">Nội dung:</div>
-    <p class="notification__view--content">
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque unde aut
-      illum necessitatibus alias magnam a tenetur cumque quis minus dolor,
-      perferendis et ipsum nobis! Commodi nulla neque error quis!
-    </p>
+      <div class="main__title">Đường dẫn</div>
+      <p class="notification__view--content">{{ noti.path }}</p>
+
+      <div class="main__title">Nội dung:</div>
+      <p class="notification__view--content">
+        {{ noti.content }}
+      </p>
+
+      <i @click="handleDelete(index)" class="fa-solid fa-trash"></i>
+    </div>
   </div>
 </template>
 <script>
+import axios from "axios";
+
 export default {
-  props: ["viewNotificationMode"],
+  data() {
+    return {
+      notificationInfo: [],
+      notificationId: "",
+      notificationDelete: {},
+    };
+  },
+
+  async beforeCreate() {
+    const res = await axios.get(`/notification/${this.$route.params.userId}`);
+    this.notificationInfo = res.data.notify;
+    this.notificationId = res.data._id;
+    console.log(this.notificationId);
+    console.log(res);
+  },
+
   methods: {
     viewHidden() {
-      this.$emit("hidden");
+      this.$router.push("/khach-hang");
+    },
+
+    async handleDelete(index) {
+      this.notificationDelete = this.notificationInfo[index];
+
+      const resDelete = await axios.delete(
+        `/notification/delete/${this.notificationId}/${this.notificationDelete._id}`
+      );
+      alert(resDelete.message);
+      window.location.reload();
     },
   },
 };
 </script>
 <style>
+.notification__view--wrap {
+  width: 100%;
+  position: relative;
+}
+
 .notification__view {
-  width: 50%;
-  position: absolute;
-  top: 20px;
+  width: 100%;
   border: 1px solid #ccc;
-  z-index: 999;
+  margin-top: 0 !important;
+}
+
+.notification__view i {
+  font-size: 20px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.notification__view i:hover {
+  color: var(--primary-color);
 }
 
 .notification__view--cancel {
