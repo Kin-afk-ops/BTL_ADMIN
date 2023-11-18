@@ -28,7 +28,9 @@
           />
 
           <button class="form__btn--main main__btn">Sửa</button>
-          <button class="form__btn--extra main__btn">Huỷ</button>
+          <button class="form__btn--extra main__btn" @click="handleHidden">
+            Huỷ
+          </button>
         </form>
       </div>
     </div>
@@ -56,7 +58,7 @@ export default {
   methods: {
     handleHidden(e) {
       e.preventDefault();
-      this.$emit("hidden");
+      this.$router.back();
     },
     async handleSubmit() {
       await axios.put(`/category/${this.$route.params.cateId}`, this.cateForm);

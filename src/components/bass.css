@@ -41,6 +41,10 @@
   cursor: text;
 }
 
+.content__table--container {
+  height: 100%;
+}
+
 .content__table--container-list {
   list-style: none;
 }
@@ -71,6 +75,11 @@
 
 .info__bottom i {
   margin-right: 10px;
+}
+
+.content__table--container-item {
+  display: flex;
+  align-items: center;
 }
 
 .content__table--container-item-edit {

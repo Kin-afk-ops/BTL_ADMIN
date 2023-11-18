@@ -16,6 +16,10 @@ const routes = [
         path: "/khach-hang",
         component: () => import("../components/ContentUser"),
       },
+      {
+        path: "/khach-hang/view/:userId",
+        component: () => import("../components/contentView/UserView"),
+      },
 
       {
         path: "sach",
@@ -54,18 +58,28 @@ const routes = [
       },
 
       {
+        path: "/don-hang/view/:orderId",
+        component: () => import("../components/contentView/OrderView"),
+      },
+
+      {
         path: "/yeu-cau",
         component: () => import("../components/ContentRequest"),
       },
 
       {
-        path: "/thong-bao/:userId",
+        path: "/thong-bao/view/:userId",
         component: () => import("../components/contentView/NotificationView"),
       },
 
       {
         path: "/nhan-vien",
         component: () => import("../components/ContentStaff"),
+      },
+
+      {
+        path: "/nhan-vien/view/:staffId",
+        component: () => import("../components/form/StaffInfoForm"),
       },
     ],
   },

@@ -4,24 +4,32 @@
       <i class="fa-regular fa-rectangle-xmark" @click="viewHidden"></i>
     </div>
 
+    <div v-if="notificationInfo.length !== 0" class="height100">
+      <div
+        class="notification__view main__container"
+        v-for="(noti, index) in notificationInfo"
+        :key="noti._id"
+      >
+        <h2 class="notification__view--title main__title">
+          {{ noti.title }}
+        </h2>
+
+        <div class="main__title">Đường dẫn</div>
+        <p class="notification__view--content">{{ noti.path }}</p>
+
+        <div class="main__title">Nội dung:</div>
+        <p class="notification__view--content">
+          {{ noti.content }}
+        </p>
+
+        <i @click="handleDelete(index)" class="fa-solid fa-trash"></i>
+      </div>
+    </div>
     <div
-      class="notification__view main__container"
-      v-for="(noti, index) in notificationInfo"
-      :key="noti._id"
+      v-if="notificationInfo.length === 0"
+      class="display__flex--center main__title notification__view--nodata"
     >
-      <h2 class="notification__view--title main__title">
-        {{ noti.title }}
-      </h2>
-
-      <div class="main__title">Đường dẫn</div>
-      <p class="notification__view--content">{{ noti.path }}</p>
-
-      <div class="main__title">Nội dung:</div>
-      <p class="notification__view--content">
-        {{ noti.content }}
-      </p>
-
-      <i @click="handleDelete(index)" class="fa-solid fa-trash"></i>
+      Không có thông báo
     </div>
   </div>
 </template>
@@ -64,8 +72,16 @@ export default {
 </script>
 <style>
 .notification__view--wrap {
+  padding: 20px;
+  position: absolute;
+  z-index: 999;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid #ccc;
+  min-height: 400px;
+  background-color: #fff;
+  border: 1px solid #ccc;
   width: 100%;
-  position: relative;
 }
 
 .notification__view {
@@ -100,5 +116,9 @@ export default {
 
 .notification__view--content {
   padding: 10px 20px;
+}
+
+.notification__view--nodata {
+  height: 100%;
 }
 </style>

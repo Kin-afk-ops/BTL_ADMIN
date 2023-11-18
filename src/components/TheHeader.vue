@@ -9,12 +9,16 @@
         />
       </router-link>
 
-      <div class="header__admin" v-if="staff">
+      <div class="header__admin" v-if="isLogin !== null">
         <div class="header__admin--avatar">
           <img src="../assets/default/default_avatar.png" alt="" />
         </div>
         <ul class="header__admin--list">
-          <li class="header__admin--item">Thông tin</li>
+          <li class="header__admin--item">
+            <router-link :to="'/nhan-vien/view/' + staffId" class="link"
+              >Thông tin</router-link
+            >
+          </li>
           <hr />
           <li @click="handleLogOut" class="header__admin--item">Đăng xuất</li>
         </ul>
@@ -26,12 +30,27 @@
 import { mapGetters } from "vuex";
 
 export default {
+  data() {
+    return {
+      isLogin: false,
+      staffId: "",
+    };
+  },
+
   methods: {
     handleLogOut() {
       localStorage.removeItem("token");
       this.$store.dispatch("staff", null);
       this.$router.push("/login");
     },
+  },
+
+  created() {
+    const staff = localStorage.getItem("staff");
+    this.staffId = localStorage.getItem("staffId");
+    if (staff !== null) {
+      this.isLogin = true;
+    }
   },
   computed: {
     ...mapGetters(["staff"]),

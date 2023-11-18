@@ -46,6 +46,7 @@ export default {
       try {
         let res = await axios.post("/auth/staff/login", this.form);
         localStorage.setItem("token", res.data.accessToken);
+        localStorage.setItem("staffId", res.data._id);
         this.$store.dispatch("staff", this.form);
         this.$router.push("/");
       } catch (error) {

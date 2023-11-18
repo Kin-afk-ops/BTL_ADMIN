@@ -53,10 +53,9 @@
             <div
               class="content__table--container-item-edit display__flex--center c-2"
             >
-              <i
-                @click="handleViewDisplay(user._id)"
-                class="fa-solid fa-eye"
-              ></i>
+              <router-link :to="'/khach-hang/view/' + user._id" class="link">
+                <i class="fa-solid fa-eye"></i>
+              </router-link>
             </div>
 
             <div
@@ -67,8 +66,8 @@
             </div>
 
             <router-link
-              :to="'/thong-bao/' + user._id"
-              class="link content__table--container-item-notification display__flex--center c-2"
+              :to="'/thong-bao/view/' + user._id"
+              class="display__flex--center link content__table--container-item-notification c-2"
             >
               Xem thông báo
             </router-link>
@@ -95,8 +94,6 @@
               @hidden="viewUserMode = false"
               :userInfo="userInfo"
             />
-
-            <router-view />
           </li>
           <hr />
         </ul>
@@ -110,7 +107,6 @@ import axios from "axios";
 import ContentDelete from "./ContentDelete";
 
 import UserForm from "./form/UserForm";
-import UserView from "./contentView/UserView";
 import NotificationForm from "./form/NotificationForm";
 export default {
   data() {
@@ -136,7 +132,6 @@ export default {
     ContentDelete,
     UserForm,
     NotificationForm,
-    UserView,
   },
 
   methods: {
@@ -160,13 +155,6 @@ export default {
 
     handleNotification() {
       this.formNotificationMode = true;
-    },
-
-    async handleViewDisplay(id) {
-      const resUserInfo = await axios.get(`info/${id}`);
-      this.viewUserMode = true;
-      this.userInfo = resUserInfo.data;
-      console.log(resUserInfo);
     },
   },
 

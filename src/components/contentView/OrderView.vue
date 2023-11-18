@@ -1,68 +1,113 @@
 <template>
-  <div class="order__view main__container" :class="{ hidden: !viewOrderMode }">
+  <div class="order__view main__container">
     <div class="order__view--container">
       <ul class="order__view--container-list">
-        <li class="order__view--container-item row no-gutters">
-          <img
-            class="img__main c-2"
-            src="https://cdn0.fahasa.com/media/catalog/product//8/9/8935278607311.jpg"
-            alt=""
-          />
+        <li
+          class="order__view--container-item row no-gutters"
+          v-if="book in orderInfo.books"
+        >
+          <img class="img__main c-2" :src="book.image" alt="" />
           <div class="order__view--container-item-info c-4">
             <p class="info__title">
-              Không Diệt Không Sinh Đừng Sợ Hãi (Tái Bản 2022) 1
+              {{ book.name }}
             </p>
             <div class="info__money">
-              <p class="info__money--all">60.000đ</p>
-              <p class="info__money--discount">110.000đ</p>
+              <p class="info__money--all">{{ book.currentPrice }}</p>
             </div>
           </div>
           <div
             class="order__view--container-item-quality display__flex--center c-2"
           >
-            <div>1</div>
+            <div>{{ book.quantity }}</div>
           </div>
 
           <div
             class="order__view--container-item-money display__flex--center c-2"
           >
-            60.000đ
+            <router-link :to="'sach/view/' + book.bookId">
+              Xem thông tin sách
+            </router-link>
           </div>
         </li>
         <hr />
       </ul>
     </div>
     <div class="order__view--client">
-      <p><b>Tên người nhận:</b> Nguyễn Vũ Linh</p>
-      <p><b>Số điện thoại người nhận:</b> 0589443320</p>
-      <p><b>Địa chỉ người nhận:</b> Mậu Thân, Cần Thơ</p>
-      <p><b>Tổng giá tiền:</b> 360000đ</p>
-      <p><b>Số tiền thu hộ:</b> 360000đ</p>
-      <p><b>Trạng thái:</b> Đang giao hàng - Hãy chờ một vài ngày</p>
+      <p><b>Tên người nhận:</b> {{ orderInfo.clientName }}</p>
+      <p><b>Số điện thoại người nhận:</b> {{ orderInfo.phone }}</p>
+      <p><b>Địa chỉ người nhận:</b>{{ orderInfo.address }}</p>
+      <p><b>Tổng giá tiền:</b> {{ orderInfo.amount }}</p>
+      <p><b>Số tiền thu hộ:</b> {{ orderInfo.collected }}</p>
+      <p><b>Trạng thái:</b>{{ orderInfo.status }}</p>
     </div>
 
+    <div
+      class="content__table--container-item-change display__flex--center c-3"
+    >
+      <form action="" @submit.prevent="handleSubmit">
+        <label for="">Chuyển trạng thái</label>
+        <select
+          class="content__table--container-select"
+          v-model="selectValue"
+          name=""
+          id=""
+        >
+          <option value="Đang chuẩn bị hàng">Đang chuẩn bị hàng</option>
+          <option value="Đang giao">Đang giao</option>
+          <option value="Đã giao">Đã giao</option>
+        </select>
+        <button class="content__table--btn main__btn">Chuyển</button>
+      </form>
+    </div>
     <div class="order__view--cancel">
       <i class="fa-regular fa-rectangle-xmark" @click="viewHidden"></i>
     </div>
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
-  props: ["viewOrderMode"],
+  data() {
+    return {
+      orderInfo: {},
+      bookInfo: [],
+      orderForm: {},
+      selectValue: "",
+    };
+  },
+
+  async beforeCreate() {
+    const res1 = await axios.get(`/order/find/${this.$route.params.orderId}`);
+    this.orderInfo = res1.data;
+    this.orderForm = this.orderInfo;
+  },
+
   methods: {
     viewHidden() {
-      this.$emit("hidden");
+      this.$router.back();
+    },
+    async handleSubmit() {
+      this.orderForm.status = this.selectValue;
+      const res = await axios.put(
+        `/order/${this.$route.params.orderId}`,
+        this.orderForm
+      );
+      console.log(res);
     },
   },
 };
 </script>
 <style>
 .order__view {
-  position: fixed;
-  top: 20px;
+  position: absolute;
   z-index: 999;
-  width: 70%;
+  left: 50%;
+  transform: translateX(-50%);
   border: 1px solid #ccc;
+  min-height: 400px;
+  background-color: #d2cece;
+  border: 1px solid #ccc;
+  width: 80%;
 }
 
 .order__view--container-list {
@@ -141,5 +186,25 @@ export default {
 
 .order__view--cancel:hover {
   color: var(--primary-color);
+}
+
+.content__table--container-item-change {
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.content__table--container-item-change form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.content__table--container-select {
+  height: 40px;
+}
+
+.content__table--container-select {
+  font-size: 16px;
 }
 </style>

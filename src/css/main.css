@@ -52,13 +52,16 @@ body {
 .hidden {
   display: none !important;
 }
+.height100 {
+  height: 100%;
+}
 
 .display__flex {
   display: flex;
 }
 
 .display__flex--center {
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
 }
