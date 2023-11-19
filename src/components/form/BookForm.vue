@@ -177,6 +177,7 @@ export default {
 
     const res2 = await axios.get(`/infoBook/${this.$route.params.bookId}`);
     this.infoBookForm.infoBook = res2.data.infoBook;
+    console.log(res2);
 
     const res5 = await axios.get("/category");
     this.categories = res5.data;

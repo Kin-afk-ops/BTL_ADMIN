@@ -34,8 +34,12 @@
     </ul>
 
     <ul class="work__bar--list" v-if="bossMode">
+      <router-link to="/so-lieu" active-class="work__bar--active" class="link">
+        <li class="work__bar--item">Số liệu</li></router-link
+      >
+      <hr />
       <router-link
-        to="/nhan-vien"
+        to="/quan-li-nhan-vien"
         active-class="work__bar--active"
         class="link"
       >
@@ -53,6 +57,12 @@ export default {
     return {
       bossMode: false,
     };
+  },
+
+  created() {
+    if (localStorage.getItem("position") === "boss") {
+      this.bossMode = true;
+    }
   },
 };
 </script>

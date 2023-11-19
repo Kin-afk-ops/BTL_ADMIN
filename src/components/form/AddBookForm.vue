@@ -169,7 +169,7 @@ export default {
   data() {
     return {
       isSuccess: false,
-      id: "",
+      bookId: "",
       bookForm: {
         name: "",
         image: "",
@@ -178,6 +178,7 @@ export default {
         categories: "",
       },
       infoBookForm: {
+        bookId: "",
         infoBook: {
           auth: "",
           publisher: "",
@@ -206,28 +207,24 @@ export default {
       e.preventDefault();
       this.$emit("hidden");
     },
-    // handleAdd(e) {
-    //   e.preventDefault();
-    //   console.log(this.$refs.commonRef.getHTML());
-    // },
 
     async handleSubmitBook() {
       const res1 = await axios.post(`/book`, this.bookForm);
-      this.id = res1.data._id;
+      this.bookId = res1.data._id;
       console.log(res1);
       this.isSuccess = true;
     },
 
     async handleSubmitInfoBook() {
       this.infoBookForm.infoBook.desc = this.$refs.commonRef.getHTML();
-      if (this.infoBookForm.infoBook.desc !== "") {
-        console.log(this.infoBookForm);
+      this.infoBookForm.bookId = this.bookId;
+      try {
+        await axios.post("/infoBook", this.infoBookForm);
+        alert("Thêm sách thành công");
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
       }
-      console.log(this.infoBookForm);
-      const res2 = await axios.post(`/infoBook/${this.id}`, this.infoBookForm);
-      console.log(res2);
-      window.location.reload();
-      alert("Thêm sách thành công");
     },
   },
 };

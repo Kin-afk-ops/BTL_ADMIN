@@ -73,13 +73,18 @@ const routes = [
       },
 
       {
-        path: "/nhan-vien",
+        path: "/nhan-vien/view/:staffId",
+        component: () => import("../components/form/StaffInfoForm"),
+      },
+
+      {
+        path: "/quan-li-nhan-vien",
         component: () => import("../components/ContentStaff"),
       },
 
       {
-        path: "/nhan-vien/view/:staffId",
-        component: () => import("../components/form/StaffInfoForm"),
+        path: "/quan-ly-nhan-vien/luong/:staffId",
+        component: () => import("../components/form/WageForm"),
       },
     ],
   },

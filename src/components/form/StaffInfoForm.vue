@@ -1,116 +1,139 @@
 <template>
-  <div class="content__form">
-    <div class="main__container form__container">
+  <div class="content__form staff__info">
+    <div class="main__container form__container staff__info--form">
       <h1 class="form__title main__title">Thông tin nhân viên</h1>
       <hr />
 
-      <div class="form__content">
-        <form class="form__group" @submit.prevent="handleSubmitBook">
+      <div class="staff__info--mode">
+        <button
+          class="main__btn"
+          :class="{ staff__active: mode === 'view' }"
+          @click="mode = 'view'"
+        >
+          Xem
+        </button>
+        <button
+          class="main__btn"
+          :class="{ staff__active: mode === 'edit' }"
+          @click="mode = 'edit'"
+        >
+          Sửa
+        </button>
+      </div>
+
+      <div class="staff__info--form-content">
+        <form
+          class="staff__info--form-group form__group"
+          @submit.prevent="handleSubmitStaff"
+        >
           <label for="">Tên tài khoản</label>
           <input
-            v-model="bookForm.name"
+            v-if="mode !== 'view'"
+            v-model="staffForm.username"
             placeholder="Nhập tên tài khoản"
             type="text"
           />
+          <p v-if="mode === 'view'">{{ staff.username }}</p>
 
           <label for="">Password </label>
           <input
-            v-model="bookForm.image"
+            v-if="mode !== 'view'"
+            v-model="staffForm.password"
             placeholder="Nhập password"
             type="password"
           />
 
-          <button class="form__btn--main main__btn">
+          <p v-if="mode === 'view'" class="staff__form--password">
+            {{ staff.password }}
+          </p>
+
+          <button class="form__btn--main main__btn" v-if="mode !== 'view'">
             Sửa thông tin tài khoản
           </button>
+
+          <div class="main__title" v-if="mode === 'view'">
+            Lương:
+            <p class="staff__wage">{{ staffInfoForm.wage }}</p>
+          </div>
         </form>
 
-        <form class="form__group" @submit.prevent="handleSubmitInfoBook">
-          <label for="">Tác giả</label>
+        <form
+          class="staff__info--form-group form__group"
+          @submit.prevent="handleSubmitInfoStaff"
+        >
+          <label for="">Họ</label>
           <input
-            v-model="infoBookForm.infoBook.auth"
-            placeholder="Nhập tác giả"
-            type="text"
-          />
-          <label for="">Nhà xuất bản</label>
-          <input
-            v-model="infoBookForm.infoBook.publisher"
-            placeholder="Nhập nhà xuất bản"
-            type="text"
-          />
-
-          <label for="">Nhà phát hành</label>
-          <input
-            v-model="infoBookForm.infoBook.supplier"
-            placeholder="Nhập nhà phát hành"
+            v-if="mode !== 'view'"
+            v-model="staffInfoForm.lastName"
+            placeholder="Nhập họ"
             type="text"
           />
 
-          <label for="">Tên đầu sách</label>
+          <p v-if="mode === 'view'">{{ staffIInfo.lastName }}</p>
+
+          <label for="">Tên</label>
           <input
-            v-model="infoBookForm.infoBook.nameSeries"
-            placeholder="Nhập tên đầu sách"
+            v-if="mode !== 'view'"
+            v-model="staffInfoForm.firstName"
+            placeholder="Nhập tên"
+            type="text"
+          />
+          <p v-if="mode === 'view'">{{ staffIInfo.firstName }}</p>
+
+          <label for="">Số điện thoại</label>
+          <input
+            v-if="mode !== 'view'"
+            v-model="staffInfoForm.phone"
+            placeholder="Nhập số điện thoại"
+            type="text"
+          />
+          <p v-if="mode === 'view'">{{ staffIInfo.phone }}</p>
+
+          <label for="">Giới tính</label>
+          <div>
+            <input
+              v-if="mode !== 'view'"
+              v-model="staffInfoForm.sex"
+              class="staff__sex"
+              type="radio"
+              name="sex"
+              value="Nam"
+            />
+            <span v-if="mode !== 'view'">Nam</span>
+          </div>
+          <div>
+            <input
+              v-if="mode !== 'view'"
+              v-model="staffInfoForm.sex"
+              class="staff__sex"
+              type="radio"
+              name="sex"
+              value="Nữ"
+            />
+            <span v-if="mode !== 'view'">Nữ</span>
+          </div>
+          <p v-if="mode === 'view'">{{ staffIInfo.sex }}</p>
+
+          <label for="">Ngày tháng năm sinh</label>
+          <input
+            v-if="mode !== 'view'"
+            v-model="staffInfoForm.birthday"
+            type="date"
+          />
+          <p v-if="mode === 'view'">{{ staffIInfo.birthday }}</p>
+
+          <label for="">Địa chỉ</label>
+          <input
+            v-if="mode !== 'view'"
+            v-model="staffInfoForm.address"
+            placeholder="Nhập địa chỉ"
             type="text"
           />
 
-          <label for="">Năm phát hành</label>
-          <input
-            v-model="infoBookForm.infoBook.publishingYear"
-            placeholder="Nhập tên đầu sách"
-            type="text"
-          />
+          <p v-if="mode === 'view'">{{ staffIInfo.address }}</p>
 
-          <label for="">Số lượng</label>
-          <input
-            v-model="infoBookForm.infoBook.quantity"
-            placeholder="Nhập số lượng"
-            type="text"
-          />
-
-          <label for="">Trọng lượng</label>
-          <input
-            v-model="infoBookForm.infoBook.weight"
-            placeholder="Nhập trọng lượng"
-            type="text"
-          />
-
-          <label for="">Kích thước</label>
-          <input
-            v-model="infoBookForm.infoBook.size"
-            placeholder="Nhập kích thước"
-            type="text"
-          />
-
-          <label for="">Hình thức</label>
-          <select
-            class="form__categories"
-            name=""
-            id=""
-            v-model="infoBookForm.infoBook.form"
-          >
-            <option value="Bìa mềm">Bìa mềm</option>
-            <option value="Bìa cứng">Bìa cứng</option>
-          </select>
-
-          <label for="">Số trang</label>
-          <input
-            v-model="infoBookForm.infoBook.numberPage"
-            placeholder="Nhập số trang"
-            type="text"
-          />
-          <label for="">Mô tả</label>
-          <quill-editor
-            class="editor-form"
-            ref="commonRef"
-            :options="options"
-            v-model.trim="infoBookForm.infoBook.desc"
-            @input="handleInput"
-            @change="handleChange($event)"
-          />
-
-          <button class="form__btn--main main__btn">Thêm</button>
-          <button @click="handleHidden" class="form__btn--extra main__btn">
-            Huỷ
+          <button class="form__btn--main main__btn" v-if="mode !== 'view'">
+            Sửa thông tin
           </button>
         </form>
       </div>
@@ -124,41 +147,47 @@
 import axios from "axios";
 
 export default {
-  props: ["addFormBookMode", "formValue"],
-
   data() {
     return {
-      isSuccess: false,
-      id: "",
-      bookForm: {
-        name: "",
-        image: "",
-        price: 0,
-        discount: 0,
-        categories: "",
+      staff: {},
+
+      staffIInfo: {},
+      staffForm: {
+        username: "",
+        password: "",
       },
-      infoBookForm: {
-        infoBook: {
-          auth: "",
-          publisher: "",
-          supplier: "",
-          nameSeries: "",
-          desc: "",
-          publishingYear: 0,
-          weight: 0,
-          size: "",
-          form: "",
-          numberPage: 0,
-          quantity: 0,
-        },
+
+      staffInfoForm: {
+        staffId: "",
+        lastName: "",
+        firstName: "",
+        phone: "",
+        sex: "",
+        birthday: "",
+        address: "",
+        wage: "",
       },
-      categories: [],
+      mode: "view",
+      statusInfo: false,
     };
   },
 
   async created() {
-    const res = await axios.get("/category");
-    this.categories = res.data;
+    this.staffForm.username = this.username;
+
+    console.log(this.staff);
+
+    try {
+      const res2 = await axios.get(`/staff/find/${this.$route.params.staffId}`);
+      this.staff = res2.data;
+      this.staffForm = res2.data;
+      const res = await axios.get(`/infoStaff/${this.$route.params.staffId}`);
+      this.staffIInfo = res.data;
+      this.staffInfoForm = res.data;
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   methods: {
@@ -167,27 +196,89 @@ export default {
       this.$router.back();
     },
 
-    async handleSubmitBook() {
-      const res1 = await axios.post(`/book`, this.bookForm);
-      this.id = res1.data._id;
-      console.log(res1);
-      this.isSuccess = true;
+    async handleSubmitStaff() {
+      const res = await axios.put(
+        `/staff/updateStaff/${this.$route.params.staffId}`,
+        this.staffForm
+      );
+      console.log(res);
+      alert("Đã cập nhật tài khoản");
     },
 
-    async handleSubmitInfoBook() {
-      this.infoBookForm.infoBook.desc = this.$refs.commonRef.getHTML();
-      if (this.infoBookForm.infoBook.desc !== "") {
-        console.log(this.infoBookForm);
+    async handleSubmitInfoStaff() {
+      this.staffInfoForm.staffId = this.$route.params.staffId;
+
+      try {
+        const res3 = await axios.put(
+          `infoStaff/${this.staffIInfo._id}`,
+          this.staffInfoForm
+        );
+        console.log(res3);
+        alert("Sửa thông tin thành công");
+        this.mode = "view";
+      } catch (error) {
+        console.log(error);
       }
-      console.log(this.infoBookForm);
-      const res2 = await axios.post(`/infoBook/${this.id}`, this.infoBookForm);
-      console.log(res2);
-      window.location.reload();
-      alert("Thêm sách thành công");
     },
   },
 };
 </script>
 <style>
 @import "./form.css";
+
+.staff__info {
+  width: 100%;
+}
+
+.staff__info--form {
+  width: 100%;
+}
+
+.staff__info--form-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+
+.staff__info--form-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 40%;
+}
+
+.staff__info--mode {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.staff__info--mode button {
+  background-color: white;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  margin-right: 20px;
+}
+
+.staff__active {
+  color: white !important;
+  background-color: var(--primary-color) !important;
+}
+
+.staff__sex {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.staff__sex + span {
+  margin-left: 10px;
+}
+
+.staff__wage {
+  color: var(--primary-color);
+  font-size: 20px;
+}
+
+.staff__form--password {
+  user-select: text;
+}
 </style>

@@ -14,7 +14,7 @@ import axios from "axios";
 
 axios.defaults.baseURL = "http://localhost:8000/api";
 axios.defaults.headers.common["token"] =
-  "Bearer " + localStorage.getItem("token");
+  "Linh " + localStorage.getItem("token");
 
 const app = createApp(App);
 app.use(store);

@@ -1,21 +1,15 @@
 <template>
-  <div class="staff__view main__container" :class="{ hidden: !formStaffMode }">
+  <div class="staff__view main__container">
     <h3 class="main__title staff__view--title">Tạo tài khoản</h3>
     <hr />
     <form @submit.prevent="handleSubmit" class="staff__view--account">
       <label for="">Tên tài khoản</label>
       <input
-        v-model="staffForm.username"
+        v-model="staffInfoForm.wage"
         type="text"
-        placeholder="Nhập tên tài khoản"
+        placeholder="Nhập số lương"
       />
-      <button class="main__btn">Tạo tài khoản</button>
-      <p><b>Mật khẩu là:</b></p>
-      <div class="staff__password">{{ staffForm.password }}</div>
-      <p class="staff__success" v-if="isSuccess">
-        Nhân viên đã được tạo thành công
-      </p>
-      <p class="staff__error" v-if="isError">Có lỗi hãy kiểm tra lại</p>
+      <button class="main__btn">Thay đỏi lương</button>
     </form>
 
     <div class="x-cancel">
@@ -25,18 +19,12 @@
 </template>
 <script>
 import axios from "axios";
-
 export default {
-  props: ["formStaffMode"],
   data() {
     return {
       isSuccess: false,
       isError: false,
 
-      staffForm: {
-        username: "",
-        password: "",
-      },
       staffInfoForm: {
         staffId: "",
         lastName: " ",
@@ -49,26 +37,29 @@ export default {
       },
     };
   },
+  async created() {
+    const res = await axios.get(`/infoStaff/${this.$route.params.staffId}`);
+    this.staffInfoForm = res.data;
+    console.log(this.staffInfoForm);
+  },
+
   methods: {
     handleHidden(e) {
       e.preventDefault();
-      this.$emit("hidden");
-      window.location.reload();
+      this.$router.back();
     },
     async handleSubmit() {
-      this.staffForm.password = Math.random().toString(36).substring(2, 10);
-
       try {
-        const res = await axios.post("/auth/staff/create", this.staffForm);
-        console.log(res);
-        this.staffInfoForm.staffId = res.data._id;
-
-        const res2 = await axios.post("/infoStaff", this.staffInfoForm);
-        console.log(res2);
-        this.isSuccess = true;
+        const res = await axios.put(
+          `/infoStaff/${this.staffInfoForm._id}`,
+          this.staffInfoForm
+        );
+        console.log(res.data);
+        alert("Thay đổi lương thành công");
+        this.$router.push(`/nhan-vien/view/${this.$route.params.staffId}`);
       } catch (error) {
         console.log(error);
-        this.isError = true;
+        console.log(error);
       }
     },
   },

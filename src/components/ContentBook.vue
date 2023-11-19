@@ -17,7 +17,7 @@
     <hr />
 
     <div class="content__table--container">
-      <ul class="content__table--container-list">
+      <ul class="content__table--container-list" v-if="bookData.length !== 0">
         <li
           class="content__table--container-item row no-gutters"
           v-for="book of bookData"
@@ -59,10 +59,19 @@
             :selected="selected"
             :modal="modal"
             @hidden="modal = false"
+            :mode="mode"
           />
         </li>
         <hr />
       </ul>
+
+      <div
+        v-else
+        class="main__title display__flex--center"
+        style="height: 100%"
+      >
+        Không có sách trong kho
+      </div>
     </div>
 
     <add-book-form
@@ -91,8 +100,10 @@ export default {
         title: "",
         btn: "Thêm",
       },
-      addMode: true,
-      bookData: null,
+
+      mode: "book",
+      deleteAll: false,
+      bookData: [],
     };
   },
 
@@ -110,16 +121,16 @@ export default {
     select() {
       this.selected = [];
       if (!this.selectAll) {
-        this.data.forEach((d) => {
-          this.selected.push(d);
+        this.bookData.forEach((d) => {
+          this.selected.push(d._id);
         });
+        this.selectAllMode = true;
       }
     },
 
     handleDelete() {
       if (this.selected.length !== 0) {
         this.modal = true;
-        this.selectAllMode = true;
       }
     },
 

@@ -30,14 +30,10 @@ export default {
 
   beforeCreate() {
     console.log(this.$store);
+    if (!localStorage.getItem("staffId")) {
+      this.$router.push("/login");
+    }
   },
-
-  // created() {
-  //   let status = this.$route.path.slice("/")[2];
-  //   if (status === "view" || status === "edit") {
-  //     this.isWorkBar = false;
-  //   }
-  // },
 };
 </script>
 <style>

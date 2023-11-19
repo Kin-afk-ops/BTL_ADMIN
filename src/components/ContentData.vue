@@ -1,6 +1,6 @@
 <template>
   <div class="data">
-    <div class="data__wrap">
+    <div class="data__wrap" v-if="userTotal && orderTotal">
       <div class="data__user data__block">
         <p>
           Số người dùng mới
@@ -12,6 +12,10 @@
         <p>Doanh thu tháng {{ mouthIncome }}:</p>
         <p>{{ income }} đ</p>
       </div>
+    </div>
+
+    <div class="data__wrap" v-else>
+      <div class="main__title display__flex--center">Không có dữ liệu</div>
     </div>
   </div>
 </template>
@@ -29,20 +33,22 @@ export default {
   },
 
   async beforeCreate() {
-    const res1 = await axios.get("/user/stats");
-    this.month = res1.data[0]._id;
-    this.userTotal = res1.data[0].total;
+    try {
+      const res1 = await axios.get("/user/stats");
+      this.month = res1.data[0]._id;
+      this.userTotal = res1.data[0].total;
 
-    const res2 = await axios.get("/order/income");
-    this.mouthIncome = res2.data[0]._id;
-    this.income = res2.data[0].total;
+      const res2 = await axios.get("/order/income");
+      this.mouthIncome = res2.data[0]._id;
+      this.income = res2.data[0].total;
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 </script>
 <style>
 .data {
-  display: flex;
-
   display: flex;
   align-items: center;
   justify-content: center;

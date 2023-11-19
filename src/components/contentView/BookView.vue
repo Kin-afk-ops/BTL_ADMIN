@@ -11,15 +11,6 @@
       </h1>
       <div class="row no-gutters book__view--content">
         <div class="book__view--content-left">
-          <div class="book__view--star">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <span>(0 đánh giá)</span>
-          </div>
-
           <div class="book__view--price">
             <span class="book__view--price-buy">{{ currentPrice }} đ</span>
             <span class="book__view--price-cost">{{ bookData.price }}</span>
@@ -143,14 +134,6 @@ export default {
 
 .book__view--content-right {
   padding-bottom: 10px;
-}
-
-.book__view--star i {
-  color: #ccc;
-}
-
-.book__view--star span {
-  color: coral;
 }
 
 .book__view--price {

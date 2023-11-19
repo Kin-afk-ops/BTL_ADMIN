@@ -9,7 +9,7 @@
         />
       </router-link>
 
-      <div class="header__admin" v-if="isLogin !== null">
+      <div class="header__admin">
         <div class="header__admin--avatar">
           <img src="../assets/default/default_avatar.png" alt="" />
         </div>
@@ -32,7 +32,6 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      isLogin: false,
       staffId: "",
     };
   },
@@ -40,18 +39,20 @@ export default {
   methods: {
     handleLogOut() {
       localStorage.removeItem("token");
+      localStorage.removeItem("vuex");
+      localStorage.removeItem("staffId");
+      localStorage.removeItem("username");
+      localStorage.removeItem("position");
       this.$store.dispatch("staff", null);
       this.$router.push("/login");
+      window.location.reload();
     },
   },
 
   created() {
-    const staff = localStorage.getItem("staff");
     this.staffId = localStorage.getItem("staffId");
-    if (staff !== null) {
-      this.isLogin = true;
-    }
   },
+
   computed: {
     ...mapGetters(["staff"]),
   },

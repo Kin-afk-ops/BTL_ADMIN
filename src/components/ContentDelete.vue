@@ -17,25 +17,42 @@
 import axios from "axios";
 
 export default {
-  props: {
-    selected: {
-      type: Array,
-    },
-    modal: {
-      type: Boolean,
-    },
-    selectAllMode: {
-      type: Boolean,
-    },
-  },
+  props: ["selected", "modal", "selectAllMode", "mode"],
 
   methods: {
     async handleDelete() {
-      if (!this.selectAllMode) {
-        await axios.delete(`/book`);
-      } else {
-        for (let s in this.selected)
-          await axios.delete(`/book/${this.selected[s]}`);
+      switch (this.mode) {
+        case "book":
+          if (this.selectAllMode) {
+            for (let s in this.selected) {
+              await axios.delete(`/book/${this.selected[s]}`);
+            }
+            await axios.delete(`/infoBook`);
+          } else {
+            for (let s in this.selected) {
+              await axios.delete(`/book/${this.selected[s]}`);
+              await axios.delete(`/infoBook/${this.selected[s]}`);
+              console.log(this.selected[s]);
+            }
+          }
+          break;
+
+        case "staff":
+          if (this.selectAllMode) {
+            await axios.delete("/boss");
+            await axios.delete("/infoStaff");
+          } else {
+            for (let s in this.selected) {
+              await axios.delete(`/boss/${this.selected[s]}`);
+              await axios.delete(`/infoStaff/${this.selected[s]}`);
+              console.log(this.selected[s]);
+            }
+          }
+          break;
+
+        default:
+          console.log("Delete...");
+          break;
       }
 
       window.location.reload();
