@@ -1,6 +1,6 @@
 <template>
   <div class="data">
-    <div class="data__wrap" v-if="userTotal && orderTotal">
+    <div class="data__wrap" v-if="isData">
       <div class="data__user data__block">
         <p>
           Số người dùng mới
@@ -29,10 +29,11 @@ export default {
       userTotal: 0,
       mouthIncome: 0,
       income: 0,
+      isData: true,
     };
   },
 
-  async beforeCreate() {
+  async created() {
     try {
       const res1 = await axios.get("/user/stats");
       this.month = res1.data[0]._id;
@@ -43,6 +44,7 @@ export default {
       this.income = res2.data[0].total;
     } catch (error) {
       console.log(error);
+      this.isData = false;
     }
   },
 };

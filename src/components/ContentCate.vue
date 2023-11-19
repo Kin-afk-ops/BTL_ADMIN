@@ -26,7 +26,7 @@
           <div
             class="content__table--container-item-input display__flex--center c-1"
           >
-            <input type="checkbox" v-model="selected" />
+            <input type="checkbox" v-model="selected" :value="category._id" />
           </div>
           <img class="img__main c-1" :src="category.image" alt="" />
           <div class="content__table--container-item-info c-4">
@@ -51,11 +51,20 @@
         <hr />
       </ul>
     </div>
+
+    <content-delete
+      :selectAllMode="selectAllMode"
+      :selected="selected"
+      :modal="modal"
+      @hidden="modal = false"
+      :mode="mode"
+    />
   </div>
 </template>
 <script>
 import axios from "axios";
 import AddCateForm from "./form/AddCateForm.vue";
+import ContentDelete from "./ContentDelete.vue";
 
 export default {
   data() {
@@ -72,11 +81,14 @@ export default {
       },
 
       categoriesInfo: [],
+
+      mode: "cate",
     };
   },
 
   components: {
     AddCateForm,
+    ContentDelete,
   },
 
   async created() {
@@ -88,8 +100,8 @@ export default {
     select() {
       this.selected = [];
       if (!this.selectAll) {
-        this.data.forEach((d) => {
-          this.selected.push(d);
+        this.categoriesInfo.forEach((d) => {
+          this.selected.push(d._id);
         });
       }
     },
@@ -102,14 +114,6 @@ export default {
 
     handleAdd() {
       this.formCateMode = true;
-    },
-
-    handleEdit() {
-      this.formCateMode = true;
-    },
-
-    handleNotification() {
-      this.formNotificationMode = true;
     },
   },
 };

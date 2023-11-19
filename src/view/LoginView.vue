@@ -21,7 +21,7 @@
             placeholder="Nhập mật khẩu"
             type="password"
           />
-          <p>{{ this.errorMessage }}</p>
+          <p style="color: red">{{ this.errorMessage }}</p>
 
           <button class="main__btn login__btn--main">Đăng nhập</button>
         </form>

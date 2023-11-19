@@ -24,7 +24,7 @@
       <ul class="content__table--container-list">
         <li
           class="content__table--container-item row no-gutters"
-          v-for="staff in staffInfo"
+          v-for="staff in filterStaff"
           :key="staff._id"
         >
           <div
@@ -85,7 +85,6 @@
 </template>
 <script>
 import ContentDelete from "./ContentDelete";
-
 import StaffForm from "./form/StaffForm";
 import axios from "axios";
 export default {
@@ -104,6 +103,7 @@ export default {
       },
       staffInfo: [],
       mode: "staff",
+      staffSearch: "",
     };
   },
 
@@ -111,6 +111,7 @@ export default {
     try {
       const res = await axios.get("/boss");
       this.staffInfo = res.data;
+      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -141,6 +142,14 @@ export default {
 
     handleAdd() {
       this.formStaffMode = true;
+    },
+  },
+
+  computed: {
+    filterStaff() {
+      return this.staffInfo.filter((s) =>
+        s.username.toLowerCase().includes(this.staffSearch.toLowerCase())
+      );
     },
   },
 };

@@ -39,13 +39,11 @@ export default {
   methods: {
     handleLogOut() {
       localStorage.removeItem("token");
-      localStorage.removeItem("vuex");
       localStorage.removeItem("staffId");
       localStorage.removeItem("username");
       localStorage.removeItem("position");
       this.$store.dispatch("staff", null);
       this.$router.push("/login");
-      window.location.reload();
     },
   },
 

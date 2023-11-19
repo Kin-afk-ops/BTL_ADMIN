@@ -10,7 +10,11 @@
       </div>
 
       <div class="content__filter c-4">
-        <input type="text" placeholder="Nhập email của khách hàng" />
+        <input
+          v-model="orderSearch"
+          type="text"
+          placeholder="Nhập ngày tạo đơn hàng"
+        />
       </div>
     </div>
     <hr />
@@ -19,13 +23,13 @@
       <ul class="content__table--container-list">
         <li
           class="content__table--container-item row no-gutters"
-          v-for="order in orderInfo"
+          v-for="order in orderFilter"
           :key="order._id"
         >
           <div
             class="content__table--container-item-input display__flex--center c-1"
           >
-            <input type="checkbox" v-model="selected" />
+            <input type="checkbox" v-model="selected" :value="order._id" />
           </div>
           <div class="content__table--container-item-info c-4">
             <p class="info__top">
@@ -57,6 +61,8 @@
             :selected="selected"
             :modal="modal"
             @hidden="modal = false"
+            :selectAll="selectAll"
+            :mode="mode"
           />
         </li>
         <hr />
@@ -76,6 +82,8 @@ export default {
       selected: [],
       modal: false,
       orderInfo: [],
+      mode: "order",
+      orderSearch: "",
     };
   },
 
@@ -83,18 +91,17 @@ export default {
     ContentDelete,
   },
 
-  async beforeCreate() {
+  async created() {
     const res = await axios.get("/order");
     this.orderInfo = res.data;
-    console.log(this.orderInfo);
   },
 
   methods: {
     select() {
       this.selected = [];
       if (!this.selectAll) {
-        this.data.forEach((d) => {
-          this.selected.push(d);
+        this.orderInfo.forEach((d) => {
+          this.selected.push(d._id);
         });
       }
     },
@@ -103,6 +110,14 @@ export default {
       if (this.selected.length !== 0) {
         this.modal = true;
       }
+    },
+  },
+
+  computed: {
+    orderFilter() {
+      return this.orderInfo.filter((o) =>
+        o.createdAt.toLowerCase().includes(this.orderSearch.toLowerCase())
+      );
     },
   },
 };

@@ -13,11 +13,15 @@
 
     <div class="content__table--container" v-if="requestInfo.length !== 0">
       <ul class="content__table--container-list">
-        <li class="content__table--container-item row no-gutters">
+        <li
+          class="content__table--container-item row no-gutters"
+          v-for="request in requestInfo"
+          :key="request._id"
+        >
           <div
             class="content__table--container-item-input display__flex--center c-1"
           >
-            <input type="checkbox" v-model="selected" />
+            <input type="checkbox" v-model="selected" :value="request._id" />
           </div>
 
           <div class="content__table--container-item-info c-4">
@@ -25,12 +29,6 @@
 
             <p class="info__bottom"><b>Yêu cầu</b></p>
           </div>
-
-          <content-delete
-            :selected="selected"
-            :modal="modal"
-            @hidden="modal = false"
-          />
         </li>
         <hr />
       </ul>
@@ -43,6 +41,14 @@
     >
       Không có Yêu cầu!
     </p>
+
+    <content-delete
+      :selected="selected"
+      :modal="modal"
+      @hidden="modal = false"
+      :selectAll="selectAll"
+      :mode="mode"
+    />
   </div>
 </template>
 <script>
@@ -56,10 +62,11 @@ export default {
       selected: [],
       modal: false,
       requestInfo: [],
+      mode: "request",
     };
   },
 
-  async beforeCreate() {
+  async created() {
     const res = await axios.get("/request");
     this.requestInfo = res.data;
   },
@@ -72,8 +79,8 @@ export default {
     select() {
       this.selected = [];
       if (!this.selectAll) {
-        this.data.forEach((d) => {
-          this.selected.push(d);
+        this.requestInfo.forEach((d) => {
+          this.selected.push(d._id);
         });
       }
     },

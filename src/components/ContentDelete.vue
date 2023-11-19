@@ -39,12 +39,60 @@ export default {
 
         case "staff":
           if (this.selectAllMode) {
-            await axios.delete("/boss");
+            for (let s in this.selected) {
+              await axios.delete(`/boss/${this.selected[s]}`);
+            }
             await axios.delete("/infoStaff");
           } else {
             for (let s in this.selected) {
               await axios.delete(`/boss/${this.selected[s]}`);
               await axios.delete(`/infoStaff/${this.selected[s]}`);
+              console.log(this.selected[s]);
+            }
+          }
+          break;
+
+        case "user":
+          if (this.selectAllMode) {
+            await axios.delete("/user");
+            await axios.delete("/info");
+          } else {
+            for (let s in this.selected) {
+              await axios.delete(`/user/${this.selected[s]}`);
+              await axios.delete(`/info/${this.selected[s]}`);
+              console.log(this.selected[s]);
+            }
+          }
+          break;
+
+        case "cate":
+          if (this.selectAllMode) {
+            await axios.delete("/category");
+          } else {
+            for (let s in this.selected) {
+              await axios.delete(`/category/${this.selected[s]}`);
+              console.log(this.selected[s]);
+            }
+          }
+          break;
+
+        case "order":
+          if (this.selectAllMode) {
+            await axios.delete("/order");
+          } else {
+            for (let s in this.selected) {
+              await axios.delete(`/order/${this.selected[s]}`);
+              console.log(this.selected[s]);
+            }
+          }
+          break;
+
+        case "request":
+          if (this.selectAllMode) {
+            await axios.delete("/request");
+          } else {
+            for (let s in this.selected) {
+              await axios.delete(`/request/${this.selected[s]}`);
               console.log(this.selected[s]);
             }
           }

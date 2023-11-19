@@ -11,7 +11,11 @@
       </div>
 
       <div class="content__filter c-4">
-        <input type="text" placeholder="Nhập tên quyển sách" />
+        <input
+          v-model="bookSearch"
+          type="text"
+          placeholder="Nhập tên quyển sách"
+        />
       </div>
     </div>
     <hr />
@@ -20,7 +24,7 @@
       <ul class="content__table--container-list" v-if="bookData.length !== 0">
         <li
           class="content__table--container-item row no-gutters"
-          v-for="book of bookData"
+          v-for="book of bookFilter"
           :key="book._id"
         >
           <div
@@ -104,6 +108,7 @@ export default {
       mode: "book",
       deleteAll: false,
       bookData: [],
+      bookSearch: "",
     };
   },
 
@@ -138,17 +143,13 @@ export default {
       this.addFormBookMode = true;
       this.formValue.title = "Thêm sách";
     },
-
-    handleViewDisplay(index) {
-      this.viewBookMode = true;
-      this.dataIndex = index;
-      console.log(this.bookViewProp);
-    },
   },
 
   computed: {
-    bookViewProp() {
-      return this.bookData[this.dataIndex];
+    bookFilter() {
+      return this.bookData.filter((b) =>
+        b.name.toLowerCase().includes(this.bookSearch.toLowerCase())
+      );
     },
   },
 };

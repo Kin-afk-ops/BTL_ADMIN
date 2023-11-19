@@ -16,7 +16,11 @@
         </div>
 
         <div class="content__filter c-4">
-          <input type="text" placeholder="Nhập email người dùng" />
+          <input
+            v-model="userSearch"
+            type="text"
+            placeholder="Nhập email người dùng"
+          />
         </div>
       </div>
       <hr />
@@ -25,13 +29,13 @@
         <ul class="content__table--container-list">
           <li
             class="content__table--container-item row no-gutters"
-            v-for="user in userData"
+            v-for="user in filterUser"
             :key="user._id"
           >
             <div
               class="content__table--container-item-input display__flex--center c-1"
             >
-              <input type="checkbox" v-model="selected" />
+              <input type="checkbox" v-model="selected" :value="user._id" />
             </div>
             <img
               class="img__main c-1"
@@ -76,6 +80,8 @@
               :selected="selected"
               :modal="modal"
               @hidden="modal = false"
+              :mode="mode"
+              :selectAll="selectAll"
             />
 
             <user-form
@@ -87,12 +93,6 @@
               :userId="user._id"
               :formNotificationMode="formNotificationMode"
               @hidden="formNotificationMode = false"
-            />
-
-            <user-view
-              :viewUserMode="viewUserMode"
-              @hidden="viewUserMode = false"
-              :userInfo="userInfo"
             />
           </li>
           <hr />
@@ -124,7 +124,8 @@ export default {
         btn: "Thêm",
       },
 
-      userInfo: "",
+      mode: "user",
+      userSearch: "",
     };
   },
 
@@ -138,9 +139,10 @@ export default {
     select() {
       this.selected = [];
       if (!this.selectAll) {
-        this.data.forEach((d) => {
-          this.selected.push(d);
+        this.userData.forEach((d) => {
+          this.selected.push(d._id);
         });
+        this.selectAll = true;
       }
     },
 
@@ -158,9 +160,16 @@ export default {
     },
   },
 
-  async beforeCreate() {
+  async created() {
     const resUser = await axios.get("/user");
     this.userData = resUser.data;
+  },
+  computed: {
+    filterUser() {
+      return this.userData.filter((u) =>
+        u.email.toLowerCase().includes(this.userSearch.toLowerCase())
+      );
+    },
   },
 };
 </script>
