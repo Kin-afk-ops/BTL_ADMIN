@@ -32,7 +32,7 @@
           >
             <input type="checkbox" v-model="selected" :value="book._id" />
           </div>
-          <img class="img__main c-1" :src="book.image" alt="" />
+          <img class="img__main c-1" :src="book.image.path" alt="" />
           <div class="content__table--container-item-info c-4">
             <p class="info__top">
               {{ book.name }}
@@ -117,7 +117,7 @@ export default {
     AddBookForm,
   },
 
-  async beforeCreate() {
+  async created() {
     const res = await axios.get("/book");
     this.bookData = res.data;
   },

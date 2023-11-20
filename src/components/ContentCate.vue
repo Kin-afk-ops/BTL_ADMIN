@@ -28,7 +28,7 @@
           >
             <input type="checkbox" v-model="selected" :value="category._id" />
           </div>
-          <img class="img__main c-1" :src="category.image" alt="" />
+          <img class="img__main c-1" :src="category.image.path" alt="" />
           <div class="content__table--container-item-info c-4">
             <p class="info__top">{{ category.name }}</p>
 
@@ -41,16 +41,16 @@
               <i class="fa-solid fa-pen"></i>
             </router-link>
           </div>
-
-          <add-cate-form
-            :formValue="formValue"
-            :formCateMode="formCateMode"
-            @hidden="formCateMode = false"
-          />
         </li>
         <hr />
       </ul>
     </div>
+
+    <add-cate-form
+      :formValue="formValue"
+      :formCateMode="formCateMode"
+      @hidden="formCateMode = false"
+    />
 
     <content-delete
       :selectAllMode="selectAllMode"
@@ -103,6 +103,7 @@ export default {
         this.categoriesInfo.forEach((d) => {
           this.selected.push(d._id);
         });
+        this.selectAllMode = true;
       }
     },
 

@@ -42,10 +42,13 @@
             placeholder="Nhập password"
             type="password"
           />
+          <div v-if="mode === 'view'" class="hidden__password">
+            <p class="staff__form--password">
+              {{ hiddenPassword }}
+            </p>
 
-          <p v-if="mode === 'view'" class="staff__form--password">
-            {{ staff.password }}
-          </p>
+            <i @click="handleDisplayPassword" class="fa-solid fa-eye"></i>
+          </div>
 
           <button class="form__btn--main main__btn" v-if="mode !== 'view'">
             Sửa thông tin tài khoản
@@ -157,6 +160,9 @@ export default {
         password: "",
       },
 
+      hiddenPassword: "...",
+      isHidden: true,
+
       staffInfoForm: {
         staffId: "",
         lastName: "",
@@ -220,6 +226,16 @@ export default {
         console.log(error);
       }
     },
+
+    handleDisplayPassword() {
+      if (this.isHidden) {
+        this.hiddenPassword = this.staff.password;
+        this.isHidden = false;
+      } else {
+        this.hiddenPassword = "...";
+        this.isHidden = true;
+      }
+    },
   },
 };
 </script>
@@ -280,5 +296,21 @@ export default {
 
 .staff__form--password {
   user-select: text;
+}
+
+.hidden__password {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 120px;
+}
+
+.hidden__password i {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.hidden__password i:hover {
+  color: var(--primary-color);
 }
 </style>

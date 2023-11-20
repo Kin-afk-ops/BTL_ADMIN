@@ -2,7 +2,7 @@
   <div class="book__view main__container row">
     <div class="col c-5 book__view--left">
       <div class="book__view--img">
-        <img alt="" :src="bookData.image" />
+        <img alt="" :src="imgPath" />
       </div>
     </div>
     <div class="col c-7 book__view--right">
@@ -66,6 +66,7 @@ export default {
   data() {
     return {
       bookData: {},
+      imgPath: "",
       currentPrice: 0,
       bookInfo: {},
     };
@@ -73,6 +74,8 @@ export default {
   async created() {
     const res1 = await axios.get(`/book/find/${this.$route.params.bookId}`);
     this.bookData = res1.data;
+    this.imgPath = res1.data.image.path;
+    console.log(this.bookData);
     this.currentPrice =
       this.bookData.price -
       (this.bookData.price * this.bookData.discount) / 100;

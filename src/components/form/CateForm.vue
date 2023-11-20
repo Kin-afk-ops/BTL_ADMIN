@@ -14,11 +14,7 @@
           />
 
           <label for="">Link ảnh danh mục </label>
-          <input
-            v-model="cateForm.image"
-            placeholder="Tìm ảnh sách và thêm link"
-            type="text"
-          />
+          <input type="file" ref="file" />
 
           <label for="">Đường dẫn </label>
           <input
@@ -44,7 +40,10 @@ export default {
     return {
       cateForm: {
         name: "",
-        image: "",
+        image: {
+          path: "",
+          publicId: "",
+        },
         path: "",
       },
     };
@@ -61,6 +60,18 @@ export default {
       this.$router.back();
     },
     async handleSubmit() {
+      if (this.$refs.file.files[0]) {
+        const resImgDelete = await axios.delete(
+          `/image/remove/${this.cateForm.image.publicId}`
+        );
+        console.log(resImgDelete);
+        const uploadData = new FormData();
+        uploadData.append("file", this.$refs.file.files[0], "file");
+        const resImg = await axios.post("/image/upload", uploadData);
+        this.cateForm.image.path = resImg.data.file.path;
+        this.cateForm.image.publicId = resImg.data.file.filename;
+      }
+
       await axios.put(`/category/${this.$route.params.cateId}`, this.cateForm);
       alert("Sửa thành công");
       this.$router.back();

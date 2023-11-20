@@ -1,6 +1,9 @@
 <template>
-  <div class="content__form" :class="{ hidden: formCateMode === false }">
-    <div class="main__container form__container">
+  <div class="content__form">
+    <div
+      class="main__container form__container"
+      :class="{ hidden: !formCateMode }"
+    >
       <h1 class="form__title main__title">
         {{ formValue.title }}
       </h1>
@@ -16,12 +19,7 @@
           />
 
           <label for="">Link ảnh danh mục </label>
-          <input
-            v-model="cateForm.image"
-            placeholder="Tìm ảnh sách và thêm link"
-            type="text"
-          />
-
+          <input type="file" ref="uploadFile" />
           <label for="">Đường dẫn </label>
           <input
             v-model="cateForm.path"
@@ -47,7 +45,10 @@ export default {
     return {
       cateForm: {
         name: "",
-        image: "",
+        image: {
+          path: "",
+          publicId: "",
+        },
         path: "",
       },
     };
@@ -59,6 +60,15 @@ export default {
       this.$emit("hidden");
     },
     async handleSubmit() {
+      const uploadData = new FormData();
+      uploadData.append("file", this.$refs.uploadFile.files[0], "file");
+
+      const resImg = await axios.post("/image/upload", uploadData);
+      console.log(resImg);
+      this.cateForm.image.path = resImg.data.file.path;
+      this.cateForm.image.publicId = resImg.data.file.filename;
+
+      console.log(resImg);
       await axios.post("/category/", this.cateForm);
       alert("Thêm thành công");
       this.$emit("hidden");

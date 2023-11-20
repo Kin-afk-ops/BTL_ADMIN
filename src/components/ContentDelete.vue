@@ -30,6 +30,9 @@ export default {
             await axios.delete(`/infoBook`);
           } else {
             for (let s in this.selected) {
+              let res = await axios.get(`book/find/${this.selected[s]}`);
+              let imgId = res.data.image.publicId;
+              await axios.delete(`/image/remove/${imgId}`);
               await axios.delete(`/book/${this.selected[s]}`);
               await axios.delete(`/infoBook/${this.selected[s]}`);
               console.log(this.selected[s]);

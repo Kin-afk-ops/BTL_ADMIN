@@ -18,11 +18,7 @@
           />
 
           <label for="">Link ảnh sách </label>
-          <input
-            v-model="bookForm.image"
-            placeholder="Tìm ảnh sách và thêm link"
-            type="text"
-          />
+          <input ref="uploadFile" type="file" @change="uploadFile" />
 
           <label for="">Giá sách</label>
           <input
@@ -172,7 +168,10 @@ export default {
       bookId: "",
       bookForm: {
         name: "",
-        image: "",
+        image: {
+          path: "",
+          publicId: "",
+        },
         price: 0,
         discount: 0,
         categories: "",
@@ -209,10 +208,20 @@ export default {
     },
 
     async handleSubmitBook() {
+      const uploadData = new FormData();
+      uploadData.append("file", this.$refs.uploadFile.files[0], "file");
+
+      const resImg = await axios.post("/image/upload", uploadData);
+      this.bookForm.image.path = resImg.data.file.path;
+      this.bookForm.image.publicId = resImg.data.file.filename;
+      console.log(resImg);
+
       const res1 = await axios.post(`/book`, this.bookForm);
       this.bookId = res1.data._id;
       console.log(res1);
       this.isSuccess = true;
+
+      console.log(res1);
     },
 
     async handleSubmitInfoBook() {

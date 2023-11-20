@@ -14,11 +14,7 @@
           />
 
           <label for="">Link ảnh sách </label>
-          <input
-            v-model="bookForm.image"
-            placeholder="Tìm ảnh sách và thêm link"
-            type="text"
-          />
+          <input ref="file" type="file" />
 
           <label for="">Giá sách</label>
           <input
@@ -146,7 +142,10 @@ export default {
     return {
       bookForm: {
         name: "",
-        image: "",
+        image: {
+          path: "",
+          publicId: "",
+        },
         price: 0,
         discount: 0,
 
@@ -176,8 +175,8 @@ export default {
     console.log(this.bookForm);
 
     const res2 = await axios.get(`/infoBook/${this.$route.params.bookId}`);
-    this.infoBookForm.infoBook = res2.data.infoBook;
-    console.log(res2);
+    this.infoBookForm = res2.data;
+    console.log(this.infoBookForm);
 
     const res5 = await axios.get("/category");
     this.categories = res5.data;
@@ -190,6 +189,18 @@ export default {
     },
 
     async handleSubmit() {
+      if (this.$refs.file.files[0]) {
+        const resImgDelete = await axios.delete(
+          `/image/remove/${this.bookForm.image.publicId}`
+        );
+        console.log(resImgDelete);
+        const uploadData = new FormData();
+        uploadData.append("file", this.$refs.file.files[0], "file");
+        const resImg = await axios.post("/image/upload", uploadData);
+        this.bookForm.image.path = resImg.data.file.path;
+        this.bookForm.image.publicId = resImg.data.file.filename;
+      }
+
       const res3 = await axios.put(
         `/book/${this.$route.params.bookId}`,
         this.bookForm
@@ -197,11 +208,9 @@ export default {
       console.log(res3);
 
       this.infoBookForm.infoBook.desc = this.$refs.commonRef.getHTML();
-      if (this.infoBookForm.infoBook.desc !== "") {
-        console.log(this.infoBookForm);
-      }
+
       const res4 = await axios.put(
-        `/infoBook/${this.$route.params.bookId}`,
+        `/infoBook/${this.infoBookForm._id}`,
         this.infoBookForm
       );
       console.log(res4);

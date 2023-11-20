@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="height100">
     <div class="content__table main__container">
       <div class="content__table--title main__title row no-gutters">
         <input
@@ -25,7 +25,7 @@
       </div>
       <hr />
 
-      <div class="content__table--container">
+      <div class="content__table--container" v-if="userData.length !== 0">
         <ul class="content__table--container-list">
           <li
             class="content__table--container-item row no-gutters"
@@ -97,6 +97,14 @@
           </li>
           <hr />
         </ul>
+      </div>
+
+      <div
+        v-else
+        class="main__title display__flex--center"
+        style="height: 100%"
+      >
+        Không có khách hàng!
       </div>
     </div>
   </div>
