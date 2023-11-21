@@ -68,6 +68,10 @@
         <hr />
       </ul>
     </div>
+
+    <p v-else class="main__title display__flex--center" style="height: 100%">
+      Chưa có khách hàng nào tạo đơn hàng!
+    </p>
   </div>
 </template>
 <script>

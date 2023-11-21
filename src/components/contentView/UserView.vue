@@ -6,7 +6,7 @@
     >
       <div class="customer__info col c-9 main__container">
         <img
-          src="../../assets//default/default_avatar.png"
+          src="../../assets/default/client_avatar.png"
           alt=""
           class="customer__info--avatar"
         />
@@ -86,6 +86,7 @@ export default {
   background-color: #fff;
   border: 1px solid #ccc;
   width: 100%;
+  height: 100%;
 }
 
 .customer__info {
@@ -97,16 +98,19 @@ export default {
   z-index: 999;
   top: 20px;
   border: 1px solid #ccc;
+  margin-top: 0;
 }
 
-.customer__info img {
-  width: 225px;
-  height: 225px;
+.customer__info--avatar {
+  width: 200px;
+  /* height: 215px; */
   object-fit: contain;
+  margin-left: 20px;
 }
 
 .customer__info--info {
   font-size: 18px;
+  margin-left: 30px;
 }
 
 .customer__info--info p {

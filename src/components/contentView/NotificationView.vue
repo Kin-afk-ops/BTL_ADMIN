@@ -45,12 +45,16 @@ export default {
     };
   },
 
-  async beforeCreate() {
-    const res = await axios.get(`/notification/${this.$route.params.userId}`);
-    this.notificationInfo = res.data.notify;
-    this.notificationId = res.data._id;
-    console.log(this.notificationId);
-    console.log(res);
+  async created() {
+    try {
+      const res = await axios.get(`/notification/${this.$route.params.userId}`);
+      this.notificationInfo = res.data.notify;
+      this.notificationId = res.data._id;
+      console.log(this.notificationId);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   methods: {

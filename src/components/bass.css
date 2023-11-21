@@ -59,10 +59,7 @@
 
 .content__table--container-list {
   list-style: none;
-}
-
-.content__table--container-item {
-  padding: 20px 0;
+  margin-top: 10px;
 }
 
 .content__table--container-item-input input {

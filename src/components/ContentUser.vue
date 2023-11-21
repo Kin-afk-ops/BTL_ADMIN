@@ -94,8 +94,8 @@
               :formNotificationMode="formNotificationMode"
               @hidden="formNotificationMode = false"
             />
+            <hr />
           </li>
-          <hr />
         </ul>
       </div>
 

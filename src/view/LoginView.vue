@@ -15,12 +15,16 @@
           />
 
           <label for="password">Mật khẩu</label>
-          <input
-            v-model="form.password"
-            id="password"
-            placeholder="Nhập mật khẩu"
-            type="password"
-          />
+          <div class="login__password">
+            <input
+              v-model="form.password"
+              id="password"
+              placeholder="Nhập mật khẩu"
+              :type="passwordType"
+            />
+            <i @click="handleHiddenPassword" class="fa-solid fa-eye"></i>
+          </div>
+
           <p style="color: red">{{ this.errorMessage }}</p>
 
           <button class="main__btn login__btn--main">Đăng nhập</button>
@@ -40,6 +44,9 @@ export default {
         password: "",
       },
       errorMessage: "",
+
+      passwordType: "password",
+      passwordHidden: true,
     };
   },
 
@@ -55,6 +62,15 @@ export default {
         window.location.replace("/");
       } catch (error) {
         this.errorMessage = "Sai tên tài khoản hoặc password";
+      }
+    },
+
+    handleHiddenPassword() {
+      this.passwordHidden = !this.passwordHidden;
+      if (this.passwordHidden === false) {
+        this.passwordType = "text";
+      } else {
+        this.passwordType = "password";
       }
     },
   },
@@ -106,8 +122,37 @@ export default {
   padding-left: 20px;
   font-size: 16px;
   outline: none;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.login__password {
+  width: 100%;
+  height: 40px;
+  display: flex;
+
   border: 1px solid #ccc;
   border-radius: 10px;
+  overflow: hidden;
+  align-items: center;
+}
+
+.login__password input {
+  width: 90%;
+  height: 100%;
+  padding-left: 20px;
+  font-size: 16px;
+  outline: none;
+  border: none;
+}
+
+.login__password i {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.login__password i:hover {
+  color: var(--primary-color);
 }
 
 .login__btn--main {

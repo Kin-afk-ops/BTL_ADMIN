@@ -42,12 +42,8 @@
         <hr />
       </ul>
 
-      <p
-        class="main__title display__flex--center"
-        style="height: 100%"
-        v-if="cartInfo.length === 0"
-      >
-        Chưa có khách hàng nào tạo đơn hàng!
+      <p class="main__title display__flex--center" style="height: 100%" v-else>
+        Chưa có khách hàng nào tạo giỏ hàng!
       </p>
     </div>
   </div>
