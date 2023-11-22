@@ -39,12 +39,12 @@
             class="form__categories"
             name=""
             id=""
-            v-model="infoBookForm.infoBook.form"
+            v-model="bookForm.categories"
           >
             <option
               v-for="cate in categories"
               :key="cate._id"
-              :value="cate.name"
+              :value="cate.path"
             >
               {{ cate.name }}
             </option>

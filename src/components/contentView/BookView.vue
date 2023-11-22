@@ -24,6 +24,7 @@
                 <p>Mã hàng</p>
                 <p>Tên nhà cung cấp</p>
                 <p>Tác giả</p>
+                <p>Danh mục</p>
                 <p>Nhà xuất bản</p>
                 <p>Năm xuất bản</p>
                 <p>Trọng lượng</p>
@@ -33,8 +34,9 @@
               </div>
               <div class="col c-6">
                 <p>{{ bookData._id }}</p>
-                <p>{{ bookInfo.publisher }}</p>
+                <p>{{ bookInfo.supplier }}</p>
                 <p>{{ bookInfo.auth }}</p>
+                <p>{{ bookData.categories }}</p>
                 <p>{{ bookInfo.publisher }}</p>
                 <p>{{ bookInfo.publishYear }}</p>
                 <p>{{ bookInfo.weight }}</p>

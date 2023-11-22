@@ -35,12 +35,12 @@
             class="form__categories"
             name=""
             id=""
-            v-model="infoBookForm.infoBook.form"
+            v-model="bookForm.categories"
           >
             <option
               v-for="cate in categories"
               :key="cate._id"
-              :value="cate.name"
+              :value="cate.path"
             >
               {{ cate.name }}
             </option>
@@ -71,6 +71,13 @@
           <input
             v-model="infoBookForm.infoBook.nameSeries"
             placeholder="Nhập tên đầu sách"
+            type="text"
+          />
+
+          <label for="">Năm phát hành</label>
+          <input
+            v-model="infoBookForm.infoBook.publishingYear"
+            placeholder="Nhập năm phát hành"
             type="text"
           />
 
@@ -200,6 +207,8 @@ export default {
         this.bookForm.image.path = resImg.data.file.path;
         this.bookForm.image.publicId = resImg.data.file.filename;
       }
+
+      console.log(this.bookForm.categories);
 
       const res3 = await axios.put(
         `/book/${this.$route.params.bookId}`,
